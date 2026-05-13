@@ -205,25 +205,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       </div>
       <button onclick="cambiarFecha(1)" id="btn-fecha-sig" style="width:40px;height:40px;border-radius:50%;border:none;background:var(--navy);color:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center">›</button>
     </div>
-    <!-- Mini calendario modal -->
-    <div id="modal-cal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;align-items:flex-end">
-      <div style="background:#fff;border-radius:20px 20px 0 0;padding:18px 14px 30px;width:100%;animation:slideup .22s ease">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-          <button onclick="cambiarMesCal(-1)" style="width:36px;height:36px;border-radius:50%;border:none;background:#f0f4ff;color:var(--navy);font-size:20px;cursor:pointer">‹</button>
-          <span id="cal-titulo" style="font-size:15px;font-weight:700;color:var(--navy)"></span>
-          <button onclick="cambiarMesCal(1)" style="width:36px;height:36px;border-radius:50%;border:none;background:#f0f4ff;color:var(--navy);font-size:20px;cursor:pointer">›</button>
+    <!-- Calendario modal -->
+    <div id="modal-cal" onclick="if(event.target===this)cerrarCalendario()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;justify-content:center;align-items:center">
+      <div style="background:#fff;border-radius:20px;padding:20px 16px 24px;width:92%;max-width:360px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <button id="cal-prev" style="width:40px;height:40px;border-radius:50%;border:none;background:#f0f4ff;color:var(--navy);font-size:24px;font-weight:700;cursor:pointer;line-height:1">‹</button>
+          <span id="cal-titulo" style="font-size:16px;font-weight:800;color:var(--navy)"></span>
+          <button id="cal-next" style="width:40px;height:40px;border-radius:50%;border:none;background:#f0f4ff;color:var(--navy);font-size:24px;font-weight:700;cursor:pointer;line-height:1">›</button>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:6px">
-          <div style="text-align:center;font-size:10px;font-weight:700;color:#999;padding:4px 0">L</div>
-          <div style="text-align:center;font-size:10px;font-weight:700;color:#999;padding:4px 0">M</div>
-          <div style="text-align:center;font-size:10px;font-weight:700;color:#999;padding:4px 0">X</div>
-          <div style="text-align:center;font-size:10px;font-weight:700;color:#999;padding:4px 0">J</div>
-          <div style="text-align:center;font-size:10px;font-weight:700;color:#999;padding:4px 0">V</div>
-          <div style="text-align:center;font-size:10px;font-weight:700;color:#999;padding:4px 0">S</div>
-          <div style="text-align:center;font-size:10px;font-weight:700;color:#f88;padding:4px 0">D</div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px;text-align:center">
+          <div style="font-size:11px;font-weight:700;color:#aaa;padding:3px 0">L</div>
+          <div style="font-size:11px;font-weight:700;color:#aaa;padding:3px 0">M</div>
+          <div style="font-size:11px;font-weight:700;color:#aaa;padding:3px 0">X</div>
+          <div style="font-size:11px;font-weight:700;color:#aaa;padding:3px 0">J</div>
+          <div style="font-size:11px;font-weight:700;color:#aaa;padding:3px 0">V</div>
+          <div style="font-size:11px;font-weight:700;color:#aaa;padding:3px 0">S</div>
+          <div style="font-size:11px;font-weight:700;color:#f88;padding:3px 0">D</div>
         </div>
-        <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px"></div>
-        <button onclick="cerrarCalendario()" style="width:100%;margin-top:14px;padding:12px;border-radius:10px;border:none;background:#f0f0f0;font-size:14px;font-weight:600;cursor:pointer;color:#555">Cancelar</button>
+        <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px"></div>
+        <button onclick="cerrarCalendario()" style="width:100%;margin-top:16px;padding:13px;border-radius:10px;border:2px solid #dde;background:#fff;font-size:14px;font-weight:700;cursor:pointer;color:#555">Cancelar</button>
       </div>
     </div>
 
@@ -529,9 +529,8 @@ cargarMes(mKI).then(()=>renderAll());
 function renderAll(){renderHistorial();renderCaja();renderNominas();renderFinanzas();}
 
 // ── NAVEGACIÓN DE FECHA ──────────────────────────────────────────────────────
-let fechaActual = new Date();
-let calMesVista = new Date();
-fechaActual.setHours(12,0,0,0);
+let fechaActual = new Date(); fechaActual.setHours(12,0,0,0);
+let calY, calM;
 
 function initDates(){
   const now=new Date();
@@ -540,8 +539,11 @@ function initDates(){
   const yyyy=now.getFullYear();
   document.getElementById('fecha-top').textContent=`${DS[now.getDay()]} ${d}/${m}/${yyyy}`;
   document.getElementById('fin-fecha').textContent=`Actualizado: ${d}/${m}/${yyyy}`;
-  fechaActual = new Date(); fechaActual.setHours(12,0,0,0);
+  fechaActual=new Date(); fechaActual.setHours(12,0,0,0);
   actualizarVistaFecha();
+  // Bind calendar nav buttons
+  document.getElementById('cal-prev').addEventListener('click', function(){cambiarMesCal(-1);});
+  document.getElementById('cal-next').addEventListener('click', function(){cambiarMesCal(1);});
 }
 
 function actualizarVistaFecha(){
@@ -552,30 +554,34 @@ function actualizarVistaFecha(){
   const b=document.getElementById('dia-lab');
   b.textContent=lab?'Lab.':'Dom.';
   b.className='badge '+(lab?'badge-blue':'badge-orange');
-  // Bloquear avanzar si es hoy
   const hoy=new Date();hoy.setHours(12,0,0,0);
-  document.getElementById('btn-fecha-sig').style.opacity=dt>=hoy?'0.3':'1';
-  document.getElementById('btn-fecha-sig').style.pointerEvents=dt>=hoy?'none':'auto';
+  const sig=document.getElementById('btn-fecha-sig');
+  sig.style.opacity=fechaActual>=hoy?'0.3':'1';
+  sig.style.pointerEvents=fechaActual>=hoy?'none':'auto';
+  // Update guardar button label
+  const btn=document.getElementById('btn-guardar');
+  if(btn) btn.innerHTML=`<i class="ti ti-device-floppy"></i> Guardar cierre — ${dt.getDate()} de ${MESES[dt.getMonth()]} ${dt.getFullYear()}`;
 }
 
 function cambiarFecha(delta){
   const hoy=new Date();hoy.setHours(12,0,0,0);
-  const nueva=new Date(fechaActual);
+  const nueva=new Date(fechaActual.getTime());
   nueva.setDate(nueva.getDate()+delta);
+  nueva.setHours(12,0,0,0);
   if(nueva>hoy) return;
   fechaActual=nueva;
   actualizarVistaFecha();
 }
 
 function getFechaKey(){
-  const d=fechaActual.getDate().toString().padStart(2,'0');
-  const m=(fechaActual.getMonth()+1).toString().padStart(2,'0');
+  const d=String(fechaActual.getDate()).padStart(2,'0');
+  const m=String(fechaActual.getMonth()+1).padStart(2,'0');
   return `${fechaActual.getFullYear()}-${m}-${d}`;
 }
 
-// ── CALENDARIO VISUAL ──────────────────────────────────────────────────────
 function abrirCalendario(){
-  calMesVista=new Date(fechaActual);
+  calY=fechaActual.getFullYear();
+  calM=fechaActual.getMonth();
   renderCalendario();
   document.getElementById('modal-cal').style.display='flex';
 }
@@ -583,45 +589,51 @@ function cerrarCalendario(){
   document.getElementById('modal-cal').style.display='none';
 }
 function cambiarMesCal(delta){
-  calMesVista.setMonth(calMesVista.getMonth()+delta);
-  // No permitir futuro
   const hoy=new Date();
-  if(calMesVista.getFullYear()>hoy.getFullYear()||(calMesVista.getFullYear()===hoy.getFullYear()&&calMesVista.getMonth()>hoy.getMonth())){
-    calMesVista.setMonth(calMesVista.getMonth()-delta);return;
+  calM+=delta;
+  if(calM>11){calM=0;calY++;}
+  if(calM<0){calM=11;calY--;}
+  if(calY>hoy.getFullYear()||(calY===hoy.getFullYear()&&calM>hoy.getMonth())){
+    calM-=delta;if(calM>11){calM=0;calY++;}if(calM<0){calM=11;calY--;}
+    return;
   }
   renderCalendario();
 }
 function renderCalendario(){
   const hoy=new Date();hoy.setHours(12,0,0,0);
-  const y=calMesVista.getFullYear();const m=calMesVista.getMonth();
-  document.getElementById('cal-titulo').textContent=`${MESES[m]} ${y}`;
-  const primero=new Date(y,m,1);
-  const ultimo=new Date(y,m+1,0).getDate();
-  // lunes=0 en nuestra grid (getDay: 0=dom,1=lun...)
-  let startDow=primero.getDay()-1;if(startDow<0)startDow=6;
+  document.getElementById('cal-titulo').textContent=`${MESES[calM]} ${calY}`;
+  const primero=new Date(calY,calM,1);
+  const totalDias=new Date(calY,calM+1,0).getDate();
+  let startDow=primero.getDay()-1; if(startDow<0) startDow=6;
   const grid=document.getElementById('cal-grid');
   grid.innerHTML='';
-  // Espacios vacíos
   for(let i=0;i<startDow;i++){
     const el=document.createElement('div');grid.appendChild(el);
   }
-  for(let d=1;d<=ultimo;d++){
-    const dt=new Date(y,m,d,12);
+  for(let d=1;d<=totalDias;d++){
+    const dt=new Date(calY,calM,d,12);
     const esFuturo=dt>hoy;
     const esHoy=dt.toDateString()===hoy.toDateString();
     const esSel=dt.toDateString()===fechaActual.toDateString();
     const esDom=dt.getDay()===0;
     const el=document.createElement('div');
     el.textContent=d;
-    el.style.cssText=`text-align:center;padding:7px 2px;border-radius:8px;font-size:13px;font-weight:${esSel||esHoy?'800':'500'};cursor:${esFuturo?'default':'pointer'};
-      background:${esSel?'var(--navy)':esHoy?'var(--lblue)':'transparent'};
-      color:${esSel?'#fff':esFuturo?'#ccc':esDom?'#f88':'#222'};`;
+    el.style.textAlign='center';
+    el.style.padding='9px 2px';
+    el.style.borderRadius='8px';
+    el.style.fontSize='14px';
+    el.style.fontWeight=esSel||esHoy?'800':'500';
+    el.style.background=esSel?'var(--navy)':esHoy?'var(--lblue)':'transparent';
+    el.style.color=esSel?'#fff':esFuturo?'#ccc':esDom?'#f44':'#222';
+    el.style.cursor=esFuturo?'default':'pointer';
     if(!esFuturo){
-      el.onclick=()=>{
-        fechaActual=new Date(y,m,d,12);
-        actualizarVistaFecha();
-        cerrarCalendario();
-      };
+      el.addEventListener('click', (function(dy,mo,ye){
+        return function(){
+          fechaActual=new Date(ye,mo,dy,12);
+          actualizarVistaFecha();
+          cerrarCalendario();
+        };
+      })(d,calM,calY));
     }
     grid.appendChild(el);
   }
