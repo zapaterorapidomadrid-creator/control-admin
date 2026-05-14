@@ -263,6 +263,29 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <button class="btn btn-success" id="btn-guardar" onclick="guardarDia()">
     <i class="ti ti-device-floppy"></i><span id="btn-guardar-txt">Guardar cierre del día</span>
   </button>
+  <!-- Barra día cerrado -->
+  <div id="dia-cerrado-bar" style="display:none;margin-top:10px;background:#1a6b1a;border-radius:10px;padding:13px 16px;display:none;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:8px">
+      <i class="ti ti-lock" style="color:#90ee90;font-size:20px"></i>
+      <div>
+        <div style="color:#fff;font-size:13px;font-weight:700">✓ Día cerrado</div>
+        <div style="color:#90ee90;font-size:10px">Toca para modificar</div>
+      </div>
+    </div>
+    <button onclick="desbloquearDia()" style="background:rgba(255,255,255,.2);border:none;border-radius:8px;padding:7px 12px;color:#fff;font-size:12px;font-weight:700;cursor:pointer">Editar</button>
+  </div>
+  <!-- Overlay bloqueo -->
+  <div id="overlay-bloq" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:250;align-items:center;justify-content:center">
+    <div style="background:#fff;border-radius:18px;padding:24px 20px;width:88%;max-width:320px;text-align:center">
+      <div style="font-size:36px;margin-bottom:10px">🔒</div>
+      <div style="font-size:16px;font-weight:800;color:#1a1a1a;margin-bottom:8px">Día ya cerrado</div>
+      <div style="font-size:13px;color:#666;margin-bottom:20px" id="bloq-fecha-txt">Este día ya tiene datos guardados.<br>¿Seguro que quieres modificarlo?</div>
+      <div style="display:flex;gap:10px">
+        <button onclick="cerrarBloq()" style="flex:1;padding:12px;border-radius:10px;border:2px solid #dde;background:#fff;font-size:14px;font-weight:700;cursor:pointer;color:#555">Cancelar</button>
+        <button onclick="confirmarEdicion()" style="flex:1;padding:12px;border-radius:10px;border:none;background:var(--orange);color:#fff;font-size:14px;font-weight:700;cursor:pointer">Sí, editar</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ══════════ MES ══════════ -->
@@ -540,18 +563,18 @@ function actualizarVistaFecha(){
   cargarDiaEnFormulario();
 }
 
+var diaBloqueado = false;
+
 function cargarDiaEnFormulario(){
   var key=getFechaKey();
   var d=state.dias[key];
+  diaBloqueado=false;
   // Limpiar siempre primero
   ['llaves','tpv','efectivo','bizum','notas'].forEach(function(id){
     document.getElementById(id).value='';
   });
-  tickets=0;
-  pagosHoy=[];
-  renderPagosHoy();
-  calcTotal();
-  // Si hay datos guardados, cargarlos
+  tickets=0; pagosHoy=[];
+  renderPagosHoy(); calcTotal();
   if(d){
     document.getElementById('llaves').value=d.llaves||'';
     document.getElementById('tpv').value=d.tpv||'';
@@ -560,16 +583,70 @@ function cargarDiaEnFormulario(){
     document.getElementById('notas').value=d.notas||'';
     tickets=d.tickets||0;
     pagosHoy=d.pagos?d.pagos.slice():[];
-    renderPagosHoy();
-    calcTotal();
+    renderPagosHoy(); calcTotal();
+    // Marcar como cerrado
+    diaBloqueado=true;
+    mostrarDiaCerrado(true);
+    bloquearFormulario(true);
+  } else {
+    mostrarDiaCerrado(false);
+    bloquearFormulario(false);
   }
   document.getElementById('tk-num').value=tickets;
-  // Si el mes del día seleccionado no está cargado, cargarlo
   var mk=selY+'-'+pad(selM+1);
-  var datosMes=getMes(mk);
-  if(!datosMes.length){
+  if(!getMes(mk).length){
     cargarMes(mk).then(function(){cargarDiaEnFormulario();});
   }
+}
+
+function mostrarDiaCerrado(cerrado){
+  var bar=document.getElementById('dia-cerrado-bar');
+  var btn=document.getElementById('btn-guardar');
+  if(cerrado){
+    bar.style.display='flex';
+    btn.style.background='#2d7a2d';
+    btn.innerHTML='<i class="ti ti-lock"></i><span>✓ Cerrado — '+selD+' de '+MESES[selM]+' '+selY+'</span>';
+  } else {
+    bar.style.display='none';
+    btn.style.background='';
+    btn.className='btn btn-success';
+    btn.innerHTML='<i class="ti ti-device-floppy"></i><span id="btn-guardar-txt">Guardar cierre — '+selD+' de '+MESES[selM]+' '+selY+'</span>';
+  }
+}
+
+function bloquearFormulario(bloquear){
+  var inputs=['llaves','tpv','efectivo','bizum','notas','tk-num'];
+  inputs.forEach(function(id){
+    var el=document.getElementById(id);
+    if(el){
+      el.readOnly=bloquear;
+      el.style.background=bloquear?'#f5f5f5':'';
+      el.style.color=bloquear?'#888':'';
+    }
+  });
+  // Botones pagos y tickets
+  document.querySelectorAll('.dest-btn,.tk-btn').forEach(function(el){
+    el.style.pointerEvents=bloquear?'none':'auto';
+    el.style.opacity=bloquear?'0.5':'1';
+  });
+}
+
+function desbloquearDia(){
+  document.getElementById('bloq-fecha-txt').innerHTML='<strong>'+selD+' de '+MESES[selM]+' '+selY+'</strong><br>¿Seguro que quieres modificar este día?';
+  document.getElementById('overlay-bloq').style.display='flex';
+}
+
+function cerrarBloq(){
+  document.getElementById('overlay-bloq').style.display='none';
+}
+
+function confirmarEdicion(){
+  cerrarBloq();
+  diaBloqueado=false;
+  mostrarDiaCerrado(false);
+  bloquearFormulario(false);
+  document.getElementById('btn-guardar').onclick=guardarDia;
+  toast('Modo edición activado');
 }
 
 function getFechaKey(){
@@ -724,6 +801,7 @@ function renderPagosHoy(){
 
 // ── GUARDAR ──────────────────────────────────────────────────────────────────
 async function guardarDia(){
+  if(diaBloqueado){desbloquearDia();return;}
   var llav=nv('llaves'),tpv=nv('tpv'),ef=nv('efectivo'),biz=nv('bizum');
   if(llav+tpv+ef+biz===0&&pagosHoy.length===0&&tickets===0){toast('Introduce al menos un dato');return;}
   var btn=document.getElementById('btn-guardar');btn.disabled=true;
@@ -734,6 +812,9 @@ async function guardarDia(){
   btn.disabled=false;
   if(ok){
     toast('✓ Guardado — '+selD+' de '+MESES[selM]);
+    diaBloqueado=true;
+    mostrarDiaCerrado(true);
+    bloquearFormulario(true);
     ['llaves','tpv','efectivo','bizum','notas'].forEach(function(id){var el=document.getElementById(id);el.value='';});
     tickets=0;document.getElementById('tk-num').value=0;
     pagosHoy=[];renderPagosHoy();calcTotal();renderAll();
