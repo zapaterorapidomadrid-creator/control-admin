@@ -563,9 +563,9 @@ function actualizarVistaFecha(){
   var hoy=new Date(); hoy.setHours(0,0,0,0);
   var sel=new Date(selY,selM,selD);
   document.getElementById('btn-next').disabled=sel>=hoy;
-  document.getElementById('btn-guardar-txt').textContent='Guardar cierre — '+selD+' de '+MESES[selM]+' '+selY;
-  // Cargar datos del día seleccionado
-  cargarDiaEnFormulario();
+  // btn-guardar-txt may not exist if day is locked, update safely
+  var bgt = document.getElementById('btn-guardar-txt');
+  if(bgt) bgt.textContent='Guardar cierre — '+selD+' de '+MESES[selM]+' '+selY;
 }
 
 // diaBloqueado es local a cada llamada, no global
@@ -690,6 +690,7 @@ function cambiarDia(delta){
   if(nueva>hoy) return;
   selY=nueva.getFullYear(); selM=nueva.getMonth(); selD=nueva.getDate();
   actualizarVistaFecha();
+  cargarDiaEnFormulario();
 }
 
 // ── CALENDARIO ───────────────────────────────────────────────────────────────
@@ -749,6 +750,7 @@ function renderCalendario(){
           selY=calY; selM=calM; selD=dy;
           actualizarVistaFecha();
           cerrarCalendario();
+          cargarDiaEnFormulario();
         });
       })(d);
     }
@@ -843,11 +845,16 @@ async function guardarDia(){
     toast('✓ Cerrado — '+selD+' de '+MESES[selM]+' '+selY);
     mostrarDiaCerrado(true);
     bloquearFormulario(true);
-    ['llaves','tpv','efectivo','bizum','notas'].forEach(function(id){var el=document.getElementById(id);el.value='';});
-    tickets=0;document.getElementById('tk-num').value=0;
-    pagosHoy=[];renderPagosHoy();calcTotal();renderAll();
+    // NO limpiar campos — mantener datos visibles del día cerrado
+    // Solo actualizar otras pestañas sin tocar el formulario actual
+    renderHistorial();
+    renderCaja();
+    renderNominas();
+    renderFinanzas();
   } else {
     toast('⚠ Guardado local (sin internet)');
+    mostrarDiaCerrado(true);
+    bloquearFormulario(true);
   }
 }
 
@@ -921,7 +928,6 @@ function renderHistorial(){
     var parts=d.fecha.split('-');
     list.innerHTML+='<div class="lrow"><div><div class="lrow-date">'+DS[dt.getDay()]+' '+parseInt(parts[2])+' '+MESES[dt.getMonth()]+' <span style="font-size:9px;color:#bbb">'+d.usuario+'</span></div><div class="lrow-sub">Llaves:'+fmt(d.llaves)+' TPV:'+fmt(d.tpv)+' Ef:'+fmt(d.efectivo)+' 🎟️'+d.tickets+'</div></div><div><div class="lrow-total">'+fmt(venta)+'</div><div class="lrow-neta">Neta: '+fmt(d.efectivo+d.llaves-pago)+'</div></div></div>';
   });
-  actualizarVistaFecha();
 }
 
 // ── CAJA ─────────────────────────────────────────────────────────────────────
@@ -1032,6 +1038,7 @@ function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.c
 
 // Inicializar vista de fecha al arrancar
 actualizarVistaFecha();
+cargarDiaEnFormulario();
 </script>
 </body>
 </html>
