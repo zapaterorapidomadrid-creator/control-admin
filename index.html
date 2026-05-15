@@ -263,6 +263,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <button class="btn btn-success" id="btn-guardar" onclick="guardarDia()">
     <i class="ti ti-device-floppy"></i><span id="btn-guardar-txt">Guardar cierre del día</span>
   </button>
+  <!-- Botón festivo/descanso -->
+  <button class="btn btn-outline" id="btn-festivo" onclick="cerrarFestivo()" style="margin-top:8px">
+    <i class="ti ti-calendar-off"></i><span id="btn-festivo-txt">Marcar como Festivo / Descanso</span>
+  </button>
+
   <!-- Barra día cerrado -->
   <div id="dia-cerrado-bar" style="display:none;margin-top:10px;background:#1a6b1a;border-radius:10px;padding:13px 16px;display:none;align-items:center;justify-content:space-between">
     <div style="display:flex;align-items:center;gap:8px">
@@ -563,54 +568,81 @@ function actualizarVistaFecha(){
   cargarDiaEnFormulario();
 }
 
-var diaBloqueado = false;
+// diaBloqueado es local a cada llamada, no global
 
 function cargarDiaEnFormulario(){
-  var key=getFechaKey();
-  var d=state.dias[key];
-  diaBloqueado=false;
-  // Limpiar siempre primero
+  var key = getFechaKey();
+  var d = state.dias[key];
+
+  // SIEMPRE limpiar formulario primero — independiente de cualquier otro día
   ['llaves','tpv','efectivo','bizum','notas'].forEach(function(id){
-    document.getElementById(id).value='';
+    var el = document.getElementById(id);
+    if(el){ el.value = ''; el.readOnly = false; el.style.background=''; el.style.color=''; }
   });
-  tickets=0; pagosHoy=[];
-  renderPagosHoy(); calcTotal();
+  tickets = 0;
+  pagosHoy = [];
+  renderPagosHoy();
+  calcTotal();
+  document.querySelectorAll('.dest-btn,.tk-btn').forEach(function(el){
+    el.style.pointerEvents='auto'; el.style.opacity='1';
+  });
+
+  // Resetear botón festivo
+  var btnF = document.getElementById('btn-festivo');
+  if(btnF){
+    btnF.style.background=''; btnF.style.borderColor=''; btnF.style.color='';
+    document.getElementById('btn-festivo-txt').textContent='Marcar como Festivo / Descanso';
+  }
+
+  // Cargar datos de ESTE día si existen
   if(d){
-    document.getElementById('llaves').value=d.llaves||'';
-    document.getElementById('tpv').value=d.tpv||'';
-    document.getElementById('efectivo').value=d.efectivo||'';
-    document.getElementById('bizum').value=d.bizum||'';
-    document.getElementById('notas').value=d.notas||'';
-    tickets=d.tickets||0;
-    pagosHoy=d.pagos?d.pagos.slice():[];
-    renderPagosHoy(); calcTotal();
-    // Marcar como cerrado
-    diaBloqueado=true;
-    mostrarDiaCerrado(true);
-    bloquearFormulario(true);
+    if(d.festivo){
+      // Día festivo — mostrar estado especial
+      document.getElementById('notas').value = d.notas || '';
+      if(btnF){
+        btnF.style.background='#6c3483'; btnF.style.borderColor='#6c3483'; btnF.style.color='#fff';
+        document.getElementById('btn-festivo-txt').textContent='🔴 '+(d.notas||'Festivo')+' — día no laborable';
+      }
+      bloquearFormulario(true);
+      mostrarDiaCerrado(true);
+    } else {
+      document.getElementById('llaves').value = d.llaves || '';
+      document.getElementById('tpv').value    = d.tpv    || '';
+      document.getElementById('efectivo').value = d.efectivo || '';
+      document.getElementById('bizum').value  = d.bizum  || '';
+      document.getElementById('notas').value  = d.notas  || '';
+      tickets  = d.tickets || 0;
+      pagosHoy = d.pagos ? d.pagos.slice() : [];
+      renderPagosHoy();
+      calcTotal();
+      mostrarDiaCerrado(true);
+      bloquearFormulario(true);
+    }
   } else {
     mostrarDiaCerrado(false);
     bloquearFormulario(false);
   }
-  document.getElementById('tk-num').value=tickets;
-  var mk=selY+'-'+pad(selM+1);
+  document.getElementById('tk-num').value = tickets;
+
+  // Cargar mes desde Sheets si no tenemos datos locales de ese mes
+  var mk = selY + '-' + pad(selM+1);
   if(!getMes(mk).length){
-    cargarMes(mk).then(function(){cargarDiaEnFormulario();});
+    cargarMes(mk).then(function(){ cargarDiaEnFormulario(); });
   }
 }
 
 function mostrarDiaCerrado(cerrado){
-  var bar=document.getElementById('dia-cerrado-bar');
-  var btn=document.getElementById('btn-guardar');
+  var btn = document.getElementById('btn-guardar');
+  var bar = document.getElementById('dia-cerrado-bar');
   if(cerrado){
-    bar.style.display='flex';
-    btn.style.background='#2d7a2d';
-    btn.innerHTML='<i class="ti ti-lock"></i><span>✓ Cerrado — '+selD+' de '+MESES[selM]+' '+selY+'</span>';
+    btn.style.background = '#1a5c1a';
+    btn.innerHTML = '<i class="ti ti-lock"></i><span>✓ Cerrado — '+selD+' de '+MESES[selM]+' '+selY+' &nbsp;|&nbsp; toca Editar para cambiar</span>';
+    if(bar) bar.style.display = 'flex';
   } else {
-    bar.style.display='none';
-    btn.style.background='';
-    btn.className='btn btn-success';
-    btn.innerHTML='<i class="ti ti-device-floppy"></i><span id="btn-guardar-txt">Guardar cierre — '+selD+' de '+MESES[selM]+' '+selY+'</span>';
+    btn.style.background = '';
+    btn.className = 'btn btn-success';
+    btn.innerHTML = '<i class="ti ti-device-floppy"></i><span>Guardar cierre — '+selD+' de '+MESES[selM]+' '+selY+'</span>';
+    if(bar) bar.style.display = 'none';
   }
 }
 
@@ -642,11 +674,9 @@ function cerrarBloq(){
 
 function confirmarEdicion(){
   cerrarBloq();
-  diaBloqueado=false;
   mostrarDiaCerrado(false);
   bloquearFormulario(false);
-  document.getElementById('btn-guardar').onclick=guardarDia;
-  toast('Modo edición activado');
+  toast('Modo edición activado — recuerda guardar al terminar');
 }
 
 function getFechaKey(){
@@ -801,7 +831,6 @@ function renderPagosHoy(){
 
 // ── GUARDAR ──────────────────────────────────────────────────────────────────
 async function guardarDia(){
-  if(diaBloqueado){desbloquearDia();return;}
   var llav=nv('llaves'),tpv=nv('tpv'),ef=nv('efectivo'),biz=nv('bizum');
   if(llav+tpv+ef+biz===0&&pagosHoy.length===0&&tickets===0){toast('Introduce al menos un dato');return;}
   var btn=document.getElementById('btn-guardar');btn.disabled=true;
@@ -811,8 +840,7 @@ async function guardarDia(){
   var ok=await sheetsPost({tipo:'cierre_dia',fecha:key,tpv:tpv,efectivo:ef,bizum:biz,llaves:llav,tickets:tickets,notas:reg.notas,usuario:currentUser,pagos_json:JSON.stringify(pagosHoy),total_pagos:pagosHoy.reduce(function(s,p){return s+p.imp;},0)});
   btn.disabled=false;
   if(ok){
-    toast('✓ Guardado — '+selD+' de '+MESES[selM]);
-    diaBloqueado=true;
+    toast('✓ Cerrado — '+selD+' de '+MESES[selM]+' '+selY);
     mostrarDiaCerrado(true);
     bloquearFormulario(true);
     ['llaves','tpv','efectivo','bizum','notas'].forEach(function(id){var el=document.getElementById(id);el.value='';});
@@ -821,6 +849,33 @@ async function guardarDia(){
   } else {
     toast('⚠ Guardado local (sin internet)');
   }
+}
+
+// ── FESTIVO / DESCANSO ───────────────────────────────────────────────────────
+function cerrarFestivo(){
+  var key = getFechaKey();
+  var d = state.dias[key];
+  if(d && d.festivo){
+    toast('Este día ya está marcado como festivo');
+    return;
+  }
+  // Pedir confirmación con nota
+  var nota = prompt('Motivo (Festivo, Vacaciones, Cierre...) — deja vacío para "Festivo"');
+  if(nota === null) return; // canceló
+  var motivo = nota.trim() || 'Festivo';
+  var reg = {tpv:0,efectivo:0,bizum:0,llaves:0,pagos:[],tickets:0,notas:motivo,usuario:currentUser,festivo:true};
+  state.dias[key] = reg;
+  saveLocal();
+  sheetsPost({tipo:'cierre_dia',fecha:key,tpv:0,efectivo:0,bizum:0,llaves:0,tickets:0,notas:'🔴 '+motivo,usuario:currentUser,pagos_json:'[]',total_pagos:0,festivo:true});
+  // Mostrar botón festivo cerrado
+  var btnF = document.getElementById('btn-festivo');
+  btnF.style.background = '#6c3483';
+  btnF.style.borderColor = '#6c3483';
+  btnF.style.color = '#fff';
+  document.getElementById('btn-festivo-txt').textContent = '🔴 '+motivo+' — día no laborable';
+  bloquearFormulario(true);
+  toast('Día marcado como '+motivo);
+  renderAll();
 }
 
 // ── HISTORIAL ────────────────────────────────────────────────────────────────
@@ -848,7 +903,7 @@ function renderHistorial(){
   var datos=getMes(mk).sort(function(a,b){return b.fecha.localeCompare(a.fecha);});
   var tv=datos.reduce(function(s,d){return s+(d.tpv+d.efectivo+d.bizum+d.llaves);},0);
   var tp=datos.reduce(function(s,d){return s+d.pagos.reduce(function(ss,p){return ss+(p.imp||0);},0);},0);
-  var pm=datos.length?tv/datos.length:0;
+  var diasLab=datos.filter(function(d){return !d.festivo;}).length; var pm=diasLab?tv/diasLab:0;
   var obj=state.config.objetivo||8000;var pct=Math.min(100,Math.round(tv/obj*100));
   document.getElementById('mes-kpis').innerHTML='<div class="kpi gold"><label>Total ventas</label><div class="val">'+fmt(tv)+'</div></div><div class="kpi red"><label>Pagos caja</label><div class="val">'+fmt(tp)+'</div></div><div class="kpi green"><label>Resultado</label><div class="val">'+fmt(tv-tp)+'</div></div><div class="kpi"><label>Prom/día</label><div class="val">'+fmt(pm)+'</div></div>';
   document.getElementById('pct-obj').textContent=pct+'%';
