@@ -99,7 +99,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .tk-num{font-size:30px;font-weight:800;color:#3a2600;min-width:40px;text-align:center}
 
 /* PAGOS */
-.dest-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.dest-btns{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;margin-bottom:10px}
 .dest-btn{border:2px solid #e8e8ee;border-radius:var(--rsm);padding:13px 8px;text-align:center;cursor:pointer;background:#fafbff;transition:.12s;user-select:none}
 .dest-btn:active{transform:scale(.95);background:#eef2ff;border-color:var(--navy)}
 .dest-btn .db-ico{font-size:28px;display:block;margin-bottom:4px}
@@ -185,6 +185,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="tab" onclick="goTab('caja')"><i class="ti ti-wallet"></i>Caja</div>
   <div class="tab" onclick="goTab('nominas')"><i class="ti ti-users"></i>Nóminas</div>
   <div class="tab" onclick="goTab('finanzas')"><i class="ti ti-chart-pie"></i>Finanzas</div>
+  <div class="tab" onclick="goTab('dashboard')"><i class="ti ti-chart-dots"></i>Stats</div>
   <div class="tab" onclick="goTab('config')"><i class="ti ti-settings"></i>Config</div>
 </div>
 
@@ -233,9 +234,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <button class="tk-btn" onclick="cambiarTickets(-1)">−</button>
       <input id="tk-num" type="number" min="0" inputmode="numeric"
         value="0" oninput="tickets=parseInt(this.value)||0"
-        style="width:64px;height:44px;border-radius:10px;border:2px solid rgba(0,0,0,.15);
-               background:rgba(255,255,255,.7);text-align:center;font-size:24px;
-               font-weight:800;color:#3a2600;padding:0;outline:none;-moz-appearance:textfield">
+        style="width:72px;height:44px;border-radius:10px;border:2px solid rgba(0,0,0,.15);
+               background:rgba(255,255,255,.85);text-align:center;font-size:24px;
+               font-weight:800;color:#3a2600;padding:0 4px;outline:none;
+               -moz-appearance:textfield;-webkit-appearance:none;cursor:text"
+        readonly="false">
       <button class="tk-btn" onclick="cambiarTickets(1)">+</button>
     </div>
   </div>
@@ -248,7 +251,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <div class="dest-btn" onclick="openPago('leidy','👤','Leidy')"><span class="db-ico">👤</span><span class="db-lbl">Leidy</span></div>
       <div class="dest-btn" onclick="openPago('victoria','👧','Victoria')"><span class="db-ico">👧</span><span class="db-lbl">Victoria</span></div>
       <div class="dest-btn" onclick="openPago('hogar','🏠','Hogar ÷2')"><span class="db-ico">🏠</span><span class="db-lbl">Hogar ÷2</span></div>
-      <div class="dest-btn" onclick="openPago('banco_ing','🏦','Ingreso a banco')"><span class="db-ico">🏦</span><span class="db-lbl">Ingreso banco</span></div>
+      <div class="dest-btn" onclick="openPago('extras','🕐','Horas extras')"><span class="db-ico">🕐</span><span class="db-lbl">Horas extras</span></div>
+      <div class="dest-btn" onclick="openPago('local','🏪','Local')"><span class="db-ico">🏪</span><span class="db-lbl">Local</span></div>
+      <div class="dest-btn" onclick="openPago('banco_ing','🏦','Ingreso banco')"><span class="db-ico">🏦</span><span class="db-lbl">Ingreso banco</span></div>
       <div class="dest-btn" onclick="openPago('varios','📋','Gastos varios')"><span class="db-ico">📋</span><span class="db-lbl">Gastos varios</span></div>
     </div>
     <div id="pagos-lista"></div>
@@ -331,7 +336,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="card">
     <div class="card-hdr"><i class="ti ti-building-bank"></i><h2>🏦 Banco</h2></div>
     <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span>Entradas (TPV + Bizum)</span><span id="banco-ent" style="color:var(--green);font-weight:700">€0,00</span></div>
-    <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span>Pagos fijos bancarios</span><span id="banco-sal" style="color:var(--red);font-weight:700">€0,00</span></div>
+    <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span>Pagos domiciliados asentados</span><span id="banco-sal" style="color:var(--red);font-weight:700">€0,00</span></div>
     <div style="display:flex;justify-content:space-between;padding:9px 0 2px;font-size:15px;font-weight:800;border-top:1px solid #eee;margin-top:5px"><span>🏦 Movimiento neto</span><span id="banco-saldo" style="color:var(--navy)">€0,00</span></div>
   </div>
 </div>
@@ -354,6 +359,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="divider"></div>
     <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:800"><span>Total Hogar</span><span id="tot-hogar" style="color:var(--red)">€0,00</span></div>
   </div>
+  <div class="card mt8">
+    <div class="card-hdr"><i class="ti ti-clock"></i><h2>🕐 Horas extras — Auxiliar</h2></div>
+    <div id="rows-extras"></div>
+    <div class="divider"></div>
+    <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:800"><span>Total Horas extras</span><span id="tot-extras" style="color:var(--red)">€0,00</span></div>
+  </div>
+  <div class="card mt8">
+    <div class="card-hdr"><i class="ti ti-building-store"></i><h2>🏪 Local — Gastos del negocio</h2></div>
+    <div id="rows-local"></div>
+    <div class="divider"></div>
+    <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:800"><span>Total Local</span><span id="tot-local" style="color:var(--red)">€0,00</span></div>
+  </div>
 </div>
 
 <!-- ══════════ FINANZAS ══════════ -->
@@ -372,6 +389,47 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div id="pagos-mes"></div>
   <div class="stitle">Vs año anterior</div>
   <div class="card"><div id="comparativa"></div></div>
+</div>
+
+<!-- ══════════ DASHBOARD ══════════ -->
+<div class="page" id="page-dashboard">
+  <p class="stitle">Dashboard</p>
+  <p class="muted" style="margin-bottom:10px" id="dash-fecha"></p>
+
+  <!-- SPEEDOMETERS -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+    <div class="card" style="text-align:center;padding:12px 8px">
+      <p style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;margin-bottom:6px">Objetivo mes</p>
+      <canvas id="gauge-obj" width="130" height="80"></canvas>
+      <div id="gauge-obj-val" style="font-size:18px;font-weight:800;color:var(--navy);margin-top:4px">0%</div>
+      <div id="gauge-obj-sub" class="muted">€0 de €0</div>
+    </div>
+    <div class="card" style="text-align:center;padding:12px 8px">
+      <p style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;margin-bottom:6px">Resultado</p>
+      <canvas id="gauge-res" width="130" height="80"></canvas>
+      <div id="gauge-res-val" style="font-size:18px;font-weight:800;color:var(--green);margin-top:4px">€0</div>
+      <div id="gauge-res-sub" class="muted">ventas - gastos</div>
+    </div>
+  </div>
+
+  <!-- BARRAS ÚLTIMOS 6 MESES -->
+  <div class="card">
+    <div class="card-hdr"><i class="ti ti-chart-bar"></i><h2>Ventas últimos 6 meses</h2></div>
+    <canvas id="chart-ventas" width="340" height="160"></canvas>
+  </div>
+
+  <!-- DONUT DISTRIBUCIÓN INGRESOS -->
+  <div class="card">
+    <div class="card-hdr"><i class="ti ti-chart-pie"></i><h2>Distribución ingresos del mes</h2></div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <canvas id="donut-ing" width="120" height="120" style="flex-shrink:0"></canvas>
+      <div id="donut-legend" style="flex:1;font-size:11px"></div>
+    </div>
+  </div>
+
+  <!-- KPIs rápidos -->
+  <div class="stitle">Resumen del mes</div>
+  <div class="kpis" id="dash-kpis"></div>
 </div>
 
 <!-- ══════════ CONFIG ══════════ -->
@@ -593,7 +651,7 @@ function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t
 
 // ── TABS ──────────────────────────────────────────────────────────────────────
 function goTab(t){
-  const ts=['cierre','historial','caja','nominas','finanzas','config'];
+  const ts=['cierre','historial','caja','nominas','finanzas','dashboard','config'];
   document.querySelectorAll('.tab').forEach(function(el,i){el.classList.toggle('active',ts[i]===t);});
   document.querySelectorAll('.page').forEach(function(el){el.classList.remove('active');});
   document.getElementById('page-'+t).classList.add('active');
@@ -601,6 +659,7 @@ function goTab(t){
     const mk=document.getElementById('mes-sel').value;
     cargarMes(mk).then(function(){renderHistorial();});
   }
+  if(t==='dashboard') renderDashboard();
   if(t==='caja') renderCaja();
   if(t==='nominas') renderNominas();
   if(t==='finanzas') renderFinanzas();
@@ -814,8 +873,9 @@ function bloquearFormulario(on){
     const el=document.getElementById(id);
     if(el){ el.readOnly=on; el.style.background=on?'#f5f5f5':''; el.style.color=on?'#888':''; }
   });
+  // tk-num always editable for quick entry
   const tk=document.getElementById('tk-num');
-  if(tk){ tk.readOnly=on; tk.style.background=on?'#f5f5f5':''; }
+  if(tk){ tk.readOnly=false; tk.style.background=''; tk.style.color=''; }
   document.querySelectorAll('.dest-btn,.tk-btn').forEach(function(el){
     el.style.pointerEvents=on?'none':'auto'; el.style.opacity=on?'0.5':'1';
   });
@@ -970,7 +1030,9 @@ function renderCaja(){
   const entC=datos.reduce(function(s,d){return s+(d.efectivo+d.llaves);},0);
   const entB=datos.reduce(function(s,d){return s+(d.tpv+d.bizum);},0);
   const salC=datos.reduce(function(s,d){return s+d.pagos.reduce(function(ss,p){return ss+(p.imp||0);},0);},0);
-  const salB=state.pagosFijos.reduce(function(s,p){return s+(p.importe||0);},0);
+  // Salidas banco: solo pagos fijos marcados como "pagado" este mes
+  // Por ahora 0 — se asientan manualmente cuando el banco los cobra
+  const salB=0;
   const ini=+(state.cajaIni[mk]||0);
   document.getElementById('caja-ent').textContent=fmt(entC);
   document.getElementById('caja-sal').textContent=fmt(salC);
@@ -997,6 +1059,8 @@ function renderNominas(){
   const gaL=filtro('leidy');  const sumL=sum(gaL);
   const gv=filtro('victoria'); const sumV=sum(gv);
   const gh=filtro('hogar');    const sumH=sum(gh);
+  const ge=filtro('extras');   const sumE=sum(ge);
+  const gl=filtro('local');    const sumL2=sum(gl);
   const buildNom=function(nombre,emoji,gd,sd){
     return '<div class="nom-name">'+emoji+' '+nombre+'</div>'+rowsHTML(gd)+'<div class="divider"></div><div class="nom-row"><span>Subtotal directo</span><span class="nom-val">'+fmt(sd)+'</span></div><div class="nom-row"><span>+ Hogar ÷2</span><span class="nom-val">'+fmt(sumH/2)+'</span></div><div class="nom-row"><span>+ Victoria ÷2</span><span class="nom-val">'+fmt(sumV/2)+'</span></div><div class="nom-row" style="font-size:14px"><span>💰 TOTAL '+nombre+'</span><span>'+fmt(sd+sumH/2+sumV/2)+'</span></div>';
   };
@@ -1006,6 +1070,10 @@ function renderNominas(){
   document.getElementById('tot-vic').textContent=fmt(sumV);
   const rh=document.getElementById('rows-hogar'); if(rh) rh.innerHTML=rowsHTML(gh);
   const th=document.getElementById('tot-hogar'); if(th) th.textContent=fmt(sumH);
+  const re=document.getElementById('rows-extras'); if(re) re.innerHTML=rowsHTML(ge);
+  const te=document.getElementById('tot-extras'); if(te) te.textContent=fmt(sumE);
+  const rl=document.getElementById('rows-local'); if(rl) rl.innerHTML=rowsHTML(gl);
+  const tl=document.getElementById('tot-local'); if(tl) tl.textContent=fmt(sumL2);
 }
 
 // ── FINANZAS ──────────────────────────────────────────────────────────────────
@@ -1059,6 +1127,130 @@ function renderConfigLists(){
 }
 function loadConfig(){document.getElementById('cfg-obj').value=state.config.objetivo||8000;}
 function saveConfig(){state.config.objetivo=parseFloat(document.getElementById('cfg-obj').value)||8000;saveLocal();}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────────
+function renderDashboard(){
+  const now=new Date();
+  document.getElementById('dash-fecha').textContent='Actualizado: '+pad(now.getDate())+'/'+pad(now.getMonth()+1)+'/'+now.getFullYear();
+  const mk=now.getFullYear()+'-'+pad(now.getMonth()+1);
+  const datos=getMes(mk).filter(function(d){return !d.festivo;});
+  const tv=datos.reduce(function(s,d){return s+(d.tpv+d.efectivo+d.bizum+d.llaves);},0);
+  const tp=datos.reduce(function(s,d){return s+d.pagos.reduce(function(ss,p){return ss+(p.imp||0);},0);},0);
+  const obj=state.config.objetivo||8000;
+  const pct=Math.min(100,Math.round(tv/obj*100));
+
+  // KPIs
+  const pm=datos.length?tv/datos.length:0;
+  document.getElementById('dash-kpis').innerHTML=
+    '<div class="kpi gold"><label>Ventas mes</label><div class="val">'+fmt(tv)+'</div></div>'+
+    '<div class="kpi red"><label>Pagos caja</label><div class="val">'+fmt(tp)+'</div></div>'+
+    '<div class="kpi green"><label>Resultado</label><div class="val">'+fmt(tv-tp)+'</div></div>'+
+    '<div class="kpi blue"><label>Días trabajados</label><div class="val">'+datos.length+'</div></div>';
+
+  // GAUGE objetivo
+  drawGauge('gauge-obj', pct, pct>=100?'#007000':pct>=60?'#C55A11':'#C00000');
+  document.getElementById('gauge-obj-val').textContent=pct+'%';
+  document.getElementById('gauge-obj-sub').textContent=fmt(tv)+' de '+fmt(obj);
+
+  // GAUGE resultado
+  const resPct=tv>0?Math.min(100,Math.round(((tv-tp)/tv)*100)):0;
+  drawGauge('gauge-res', resPct, resPct>=30?'#007000':resPct>=10?'#C55A11':'#C00000');
+  document.getElementById('gauge-res-val').textContent=fmt(tv-tp);
+  document.getElementById('gauge-res-val').style.color=tv-tp>=0?'var(--green)':'var(--red)';
+  document.getElementById('gauge-res-sub').textContent='margen '+resPct+'%';
+
+  // BARRAS 6 meses
+  const labels=[]; const vals=[];
+  for(let i=5;i>=0;i--){
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    const kmk=d.getFullYear()+'-'+pad(d.getMonth()+1);
+    const mes=getMes(kmk).filter(function(x){return !x.festivo;});
+    labels.push(MESES[d.getMonth()].substring(0,3));
+    vals.push(mes.reduce(function(s,x){return s+(x.tpv+x.efectivo+x.bizum+x.llaves);},0));
+  }
+  drawBars('chart-ventas', labels, vals, obj);
+
+  // DONUT distribución
+  const sumTpv=datos.reduce(function(s,d){return s+d.tpv;},0);
+  const sumEf=datos.reduce(function(s,d){return s+d.efectivo;},0);
+  const sumBiz=datos.reduce(function(s,d){return s+d.bizum;},0);
+  const sumLlav=datos.reduce(function(s,d){return s+d.llaves;},0);
+  const donutData=[
+    {label:'TPV',val:sumTpv,color:'#4472C4'},
+    {label:'Efectivo',val:sumEf,color:'#FFD966'},
+    {label:'Bizum',val:sumBiz,color:'#70AD47'},
+    {label:'Llaves',val:sumLlav,color:'#ED7D31'}
+  ].filter(function(x){return x.val>0;});
+  drawDonut('donut-ing', donutData);
+  const tot=donutData.reduce(function(s,x){return s+x.val;},0);
+  document.getElementById('donut-legend').innerHTML=donutData.map(function(x){
+    return '<div style="display:flex;align-items:center;gap:6px;margin-bottom:5px"><div style="width:10px;height:10px;border-radius:50%;background:'+x.color+';flex-shrink:0"></div><span>'+x.label+': '+fmt(x.val)+' ('+(tot?Math.round(x.val/tot*100):0)+'%)</span></div>';
+  }).join('');
+}
+
+function drawGauge(id, pct, color){
+  const canvas=document.getElementById(id); if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const cx=W/2, cy=H-10, r=H-20;
+  // Background arc
+  ctx.beginPath(); ctx.arc(cx,cy,r,Math.PI,0); ctx.lineWidth=14; ctx.strokeStyle='#eee'; ctx.stroke();
+  // Value arc
+  const angle=Math.PI*(pct/100);
+  ctx.beginPath(); ctx.arc(cx,cy,r,Math.PI,Math.PI+angle); ctx.lineWidth=14; ctx.strokeStyle=color; ctx.lineCap='round'; ctx.stroke();
+  // Needle
+  const needleAngle=Math.PI+angle;
+  ctx.beginPath();
+  ctx.moveTo(cx,cy);
+  ctx.lineTo(cx+Math.cos(needleAngle)*(r-4), cy+Math.sin(needleAngle)*(r-4));
+  ctx.lineWidth=3; ctx.strokeStyle='#333'; ctx.stroke();
+  ctx.beginPath(); ctx.arc(cx,cy,5,0,Math.PI*2); ctx.fillStyle='#333'; ctx.fill();
+}
+
+function drawBars(id, labels, vals, objetivo){
+  const canvas=document.getElementById(id); if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const maxVal=Math.max(objetivo, ...vals, 1);
+  const n=labels.length; const pad2=30; const barW=(W-pad2*2)/n*0.6; const gap=(W-pad2*2)/n;
+  // Línea objetivo
+  const objY=H-20-(objetivo/maxVal)*(H-40);
+  ctx.beginPath(); ctx.setLineDash([4,3]); ctx.moveTo(pad2,objY); ctx.lineTo(W-pad2,objY);
+  ctx.strokeStyle='#C00000'; ctx.lineWidth=1.5; ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle='#C00000'; ctx.font='9px Arial'; ctx.fillText('Obj',W-pad2+2,objY+3);
+  vals.forEach(function(v,i){
+    const x=pad2+i*gap+(gap-barW)/2;
+    const barH=(v/maxVal)*(H-40);
+    const y=H-20-barH;
+    const color=v>=objetivo?'#007000':v>=objetivo*0.7?'#C55A11':'#4472C4';
+    ctx.fillStyle=color; ctx.beginPath();
+    ctx.roundRect?ctx.roundRect(x,y,barW,barH,4):ctx.fillRect(x,y,barW,barH);
+    ctx.fill();
+    ctx.fillStyle='#555'; ctx.font='9px Arial'; ctx.textAlign='center';
+    ctx.fillText(labels[i],x+barW/2,H-5);
+    if(v>0){ ctx.fillStyle='#fff'; ctx.font='bold 8px Arial'; ctx.fillText(Math.round(v/1000)+'k',x+barW/2,y+12); }
+  });
+}
+
+function drawDonut(id, data){
+  const canvas=document.getElementById(id); if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const tot=data.reduce(function(s,x){return s+x.val;},0); if(!tot) return;
+  const cx=W/2, cy=H/2, r=Math.min(W,H)/2-8;
+  let angle=-Math.PI/2;
+  data.forEach(function(x){
+    const slice=(x.val/tot)*Math.PI*2;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,angle,angle+slice);
+    ctx.fillStyle=x.color; ctx.fill();
+    angle+=slice;
+  });
+  // Hole
+  ctx.beginPath(); ctx.arc(cx,cy,r*0.55,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+}
 
 // ── EXPORT ────────────────────────────────────────────────────────────────────
 function exportarMes(){const mk=document.getElementById('mes-sel').value;const datos=getMes(mk).sort(function(a,b){return a.fecha.localeCompare(b.fecha);});let c='Fecha,Llaves,TPV,Efectivo,Bizum,Total,Tickets,Usuario,Festivo\n';datos.forEach(function(d){const tv=d.tpv+d.efectivo+d.bizum+d.llaves;c+=d.fecha+','+d.llaves+','+d.tpv+','+d.efectivo+','+d.bizum+','+tv+','+d.tickets+',"'+d.usuario+'",'+(d.festivo?'Sí':'No')+'\n';});dlCSV(c,'ventas_'+mk+'.csv');}
