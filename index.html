@@ -902,6 +902,19 @@ function confirmarEdicion(){
   cerrarBloq();
   marcarCerrado(false);
   bloquearFormulario(false);
+  // Reset festivo button to show current state
+  const key=getFechaKey();
+  const esFestivo=state.dias[key]&&state.dias[key].festivo;
+  const btnF=document.getElementById('btn-festivo');
+  if(btnF){
+    if(esFestivo){
+      btnF.style.background='#6c3483';btnF.style.borderColor='#6c3483';btnF.style.color='#fff';
+      document.getElementById('btn-festivo-txt').textContent='🔴 Toca para desmarcar festivo';
+    } else {
+      btnF.style.cssText='';
+      document.getElementById('btn-festivo-txt').textContent='Marcar como Festivo / Descanso';
+    }
+  }
   toast('Modo edición — recuerda guardar al terminar');
 }
 
@@ -942,7 +955,11 @@ function renderPagosHoy(){
 // ── GUARDAR DÍA ───────────────────────────────────────────────────────────────
 async function guardarDia(){
   const llav=nv('llaves'),tpv=nv('tpv'),ef=nv('efectivo'),biz=nv('bizum');
-  if(llav+tpv+ef+biz===0&&pagosHoy.length===0&&tickets===0){toast('Introduce al menos un dato');return;}
+  const key0=getFechaKey();
+  const esEdicion=!!state.dias[key0];
+  if(!esEdicion && llav+tpv+ef+biz===0&&pagosHoy.length===0&&tickets===0){
+    toast('Introduce al menos un dato');return;
+  }
   const btn=document.getElementById('btn-guardar');
   btn.disabled=true; btn.innerHTML='<i class="ti ti-loader"></i> Guardando...';
   const key=getFechaKey();
@@ -967,7 +984,27 @@ async function guardarDia(){
 // ── FESTIVO ───────────────────────────────────────────────────────────────────
 function cerrarFestivo(){
   const key=getFechaKey();
-  if(state.dias[key]&&state.dias[key].festivo){toast('Ya marcado como festivo');return;}
+  const yaFestivo=state.dias[key]&&state.dias[key].festivo;
+  if(yaFestivo){
+    // Permitir desmarcar festivo
+    if(!confirm('Este día está marcado como festivo. ¿Quieres desmarcarlo para introducir datos?')) return;
+    delete state.dias[key];
+    saveLocal();
+    // Reset formulario a vacío
+    ['llaves','tpv','efectivo','bizum','notas'].forEach(function(id){
+      const el=document.getElementById(id);
+      if(el){el.value='';el.readOnly=false;el.style.background='';el.style.color='';}
+    });
+    tickets=0; pagosHoy=[];
+    renderPagosHoy(); calcTotal();
+    document.getElementById('tk-num').value=0;
+    document.querySelectorAll('.dest-btn,.tk-btn').forEach(function(el){el.style.pointerEvents='auto';el.style.opacity='1';});
+    const btnF=document.getElementById('btn-festivo');
+    if(btnF){btnF.style.cssText='';document.getElementById('btn-festivo-txt').textContent='Marcar como Festivo / Descanso';}
+    marcarCerrado(false);
+    toast('Festivo desmarcado — ya puedes introducir datos');
+    return;
+  }
   const nota=prompt('Motivo (deja vacío para "Festivo"):');
   if(nota===null) return;
   const motivo=nota.trim()||'Festivo';
@@ -975,7 +1012,7 @@ function cerrarFestivo(){
   state.dias[key]=reg; saveLocal();
   sheetsPost({tipo:'cierre_dia',fecha:key,tpv:0,efectivo:0,bizum:0,llaves:0,tickets:0,notas:'🔴 '+motivo,usuario:currentUser,pagos_json:'[]',total_pagos:0});
   const btnF=document.getElementById('btn-festivo');
-  if(btnF){ btnF.style.background='#6c3483'; btnF.style.borderColor='#6c3483'; btnF.style.color='#fff'; document.getElementById('btn-festivo-txt').textContent='🔴 '+motivo+' — no laborable'; }
+  if(btnF){btnF.style.background='#6c3483';btnF.style.borderColor='#6c3483';btnF.style.color='#fff';document.getElementById('btn-festivo-txt').textContent='🔴 '+motivo+' — no laborable';}
   bloquearFormulario(true); marcarCerrado(true);
   toast('Día marcado como '+motivo);
   renderOtrasPestanas();
