@@ -584,34 +584,38 @@ async function sheetsPost(payload){
   }catch(e){setSyncStatus('error');return false;}
 }
 
-// Carga datos de un mes desde Sheets y los MERGE en state.dias
-// Solo añade — nunca borra lo que ya hay en local
-async function cargarMes(mesKey){
-  showLoader(true);
+// cargarMesDesdeSheets — Sheets es la fuente de verdad, SIEMPRE sobreescribe local
+async function cargarMesDesdeSheets(mesKey){
   try{
     const r=await fetch(SCRIPT_URL+'?tipo=mes&mes='+encodeURIComponent(mesKey));
     const data=await r.json();
-    if(data && data.dias){
+    if(data && data.dias && data.dias.length>0){
       data.dias.forEach(function(d){
         if(!d.fecha) return;
         let k=d.fecha;
         if(typeof k!=='string' || k.length>10) k=new Date(k).toISOString().split('T')[0];
-        // Solo escribir si no tenemos datos locales más recientes
-        // (local siempre gana — fue guardado intencionalmente)
-        if(!state.dias[k]){
-          let pagos=[];
-          try{pagos=typeof d.pagos_json==='string'?JSON.parse(d.pagos_json):[];}catch(e){}
-          state.dias[k]={
-            tpv:+d.tpv||0, efectivo:+d.efectivo||0, bizum:+d.bizum||0, llaves:+d.llaves||0,
-            pagos:pagos, tickets:+d.tickets||0, notas:d.notas||'', usuario:d.usuario||'',
-            festivo:d.festivo||false
-          };
-        }
+        let pagos=[];
+        try{pagos=typeof d.pagos_json==='string'?JSON.parse(d.pagos_json):[];}catch(e){}
+        // Sheets siempre gana — es la fuente de verdad
+        state.dias[k]={
+          tpv:+d.tpv||0, efectivo:+d.efectivo||0, bizum:+d.bizum||0, llaves:+d.llaves||0,
+          pagos:pagos, tickets:+d.tickets||0, notas:d.notas||'', usuario:d.usuario||'',
+          festivo:d.festivo||false
+        };
       });
       saveLocal();
+      return true;
     }
-  }catch(e){}
-  showLoader(false);
+    return false;
+  }catch(e){
+    console.log('Sin conexión, usando datos locales');
+    return false;
+  }
+}
+
+// cargarMes — alias que usa Sheets como fuente de verdad
+async function cargarMes(mesKey){
+  return await cargarMesDesdeSheets(mesKey);
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
@@ -663,7 +667,7 @@ function goTab(t){
   document.getElementById('page-'+t).classList.add('active');
   if(t==='historial'){
     const mk=document.getElementById('mes-sel').value;
-    cargarMes(mk).then(function(){renderHistorial();});
+    cargarMesDesdeSheets(mk).then(function(){renderHistorial();});
   }
   if(t==='dashboard') renderDashboard();
   if(t==='caja') renderCaja();
@@ -719,12 +723,13 @@ function cambiarDia(delta){
   const hoy=new Date();hoy.setHours(0,0,0,0);
   const nueva=new Date(selY,selM,selD+delta);
   if(nueva>hoy) return;
+  const mesAnterior=selM;
   selY=nueva.getFullYear(); selM=nueva.getMonth(); selD=nueva.getDate();
   actualizarVistaFecha();
-  // Cargar mes si no lo tenemos
-  const mk=selY+'-'+pad(selM+1);
-  if(!getMes(mk).length){
-    cargarMes(mk).then(function(){cargarDiaEnFormulario();});
+  // Si cambia de mes, recargar desde Sheets
+  if(selM!==mesAnterior){
+    const mk=selY+'-'+pad(selM+1);
+    cargarMesDesdeSheets(mk).then(function(){cargarDiaEnFormulario();});
   } else {
     cargarDiaEnFormulario();
   }
