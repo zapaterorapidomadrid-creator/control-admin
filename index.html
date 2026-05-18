@@ -15,7 +15,7 @@
   --gold:#FFD966;--gray:#F4F5F7;--dgray:#555;
   --r:16px;--rsm:10px;--sh:0 2px 14px rgba(0,0,0,.09);
 }
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--gray);color:#222;padding-bottom:90px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--gray);color:#222;padding-bottom:90px}
 @keyframes loadslide{0%{background-position:0%}100%{background-position:200%}}
 @keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 @keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
@@ -33,35 +33,37 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .page{display:none;padding:12px}
 .page.active{display:block;animation:fadein .18s ease}
 
-/* OVERLAY GENERICO */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end;justify-content:center}
 .overlay.open{display:flex}
 .sheet{background:#fff;border-radius:20px 20px 0 0;padding:20px 16px 34px;width:100%;max-height:88vh;overflow-y:auto;animation:slideup .22s ease}
 .sheet-title{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
-.sheet-close{font-size:24px;color:#bbb;cursor:pointer;line-height:1;padding:0 4px}
+.sheet-close{font-size:24px;color:#bbb;cursor:pointer}
 
-/* CALENDARIO centrado */
 .cal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;align-items:center;justify-content:center}
 .cal-overlay.open{display:flex}
 .cal-box{background:#fff;border-radius:20px;padding:20px 16px 22px;width:92%;max-width:340px}
 .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.cal-nav-btn{width:42px;height:42px;border-radius:50%;border:none;background:#f0f4ff;color:var(--navy);font-size:26px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.cal-nav-btn{width:42px;height:42px;border-radius:50%;border:none;background:#f0f4ff;color:var(--navy);font-size:26px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .cal-mes{font-size:16px;font-weight:800;color:var(--navy)}
 .cal-dias-hdr{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:6px;text-align:center}
 .cal-dias-hdr span{font-size:11px;font-weight:700;color:#aaa;padding:3px 0}
-.cal-dias-hdr span.dom{color:#f44}
+.cal-dias-hdr .dom{color:#f44}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.cal-dia{padding:9px 2px;border-radius:8px;text-align:center;font-size:14px;font-weight:500;cursor:pointer;min-height:36px;display:flex;align-items:center;justify-content:center}
+.cal-dia{padding:9px 2px;border-radius:8px;text-align:center;font-size:14px;font-weight:500;cursor:pointer;min-height:36px;display:flex;align-items:center;justify-content:center;position:relative}
 .cal-dia.sel{background:var(--navy);color:#fff;font-weight:800}
 .cal-dia.hoy{background:var(--lblue);font-weight:800}
 .cal-dia.dom{color:#f44}
 .cal-dia.futuro{color:#ccc;cursor:default}
 .cal-dia.vacio{cursor:default}
+.cal-dia.tiene-datos::after{content:"";position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--green)}
+.cal-dia.sel.tiene-datos::after{background:#fff}
+.cal-dia.cerrado-ok{background:#e8f5e9}
+.cal-dia.festivo-dia{background:#f3e5f5;color:#6c3483}
 
 .card{background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:14px;margin-bottom:10px}
 .card-hdr{display:flex;align-items:center;gap:8px;margin-bottom:12px}
 .card-hdr i{font-size:19px;color:var(--blue)}
-.card-hdr h2{font-size:14px;font-weight:700;flex:1;color:#1a1a1a}
+.card-hdr h2{font-size:14px;font-weight:700;flex:1}
 .stitle{font-size:10px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.7px;margin:14px 0 7px}
 
 .field{margin-bottom:9px}
@@ -69,19 +71,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .field input,.field select{width:100%;padding:10px 11px;border:1.5px solid #e8e8ee;border-radius:var(--rsm);font-size:16px;background:#fafbff;outline:none;color:#111;transition:.15s}
 .field input:focus,.field select:focus{border-color:var(--blue);background:#fff}
 .pfx{position:relative}.pfx input{padding-left:24px}
-.pfx::before{content:'€';position:absolute;left:9px;top:50%;transform:translateY(-50%);color:#aaa;font-size:13px;pointer-events:none}
+.pfx::before{content:"€";position:absolute;left:9px;top:50%;transform:translateY(-50%);color:#aaa;font-size:13px;pointer-events:none}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 
-/* SELECTOR DE FECHA */
 .fecha-nav{display:flex;align-items:center;justify-content:space-between;background:#f0f4ff;border-radius:12px;padding:10px 12px;margin-bottom:12px}
-.fecha-nav-btn{width:44px;height:44px;border-radius:50%;border:none;background:var(--navy);color:#fff;font-size:26px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;flex-shrink:0}
-.fecha-nav-btn:disabled{opacity:.3}
+.fecha-nav-btn{width:44px;height:44px;border-radius:50%;border:none;background:var(--navy);color:#fff;font-size:26px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fecha-nav-btn:disabled{opacity:.3;cursor:default}
 .fecha-centro{flex:1;text-align:center;cursor:pointer;padding:0 8px}
 .fecha-num{font-size:34px;font-weight:800;color:var(--navy);line-height:1}
 .fecha-txt{font-size:12px;font-weight:600;color:#555;margin-top:3px}
 .fecha-hint{font-size:10px;color:var(--blue);margin-top:2px}
 
-/* TOTALES */
 .auto-totals{background:linear-gradient(135deg,var(--navy),#2563a8);border-radius:var(--rsm);padding:13px 15px;margin:10px 0;color:#fff}
 .at-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0}
 .at-row:not(:last-child){border-bottom:1px solid rgba(255,255,255,.15)}
@@ -91,19 +91,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .at-val.gold{color:var(--gold)}
 .at-val.lgreen{color:#90ee90}
 
-/* TICKETS */
 .tickets-box{display:flex;align-items:center;justify-content:space-between;background:var(--gold);border-radius:var(--rsm);padding:12px 16px;margin:10px 0}
 .tk-label{font-size:13px;font-weight:700;color:#5a3e00}
-.tk-controls{display:flex;align-items:center;gap:14px}
+.tk-controls{display:flex;align-items:center;gap:10px}
 .tk-btn{width:38px;height:38px;border-radius:50%;border:none;font-size:24px;font-weight:700;cursor:pointer;background:rgba(0,0,0,.15);color:#333;display:flex;align-items:center;justify-content:center}
-.tk-num{font-size:30px;font-weight:800;color:#3a2600;min-width:40px;text-align:center}
+.tk-input{width:64px;height:44px;border-radius:10px;border:2px solid rgba(0,0,0,.15);background:rgba(255,255,255,.85);text-align:center;font-size:24px;font-weight:800;color:#3a2600;padding:0 4px;outline:none;-moz-appearance:textfield;-webkit-appearance:none}
 
-/* PAGOS */
-.dest-btns{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;margin-bottom:10px}
-.dest-btn{border:2px solid #e8e8ee;border-radius:var(--rsm);padding:13px 8px;text-align:center;cursor:pointer;background:#fafbff;transition:.12s;user-select:none}
+.dest-btns{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:10px}
+.dest-btn{border:2px solid #e8e8ee;border-radius:var(--rsm);padding:11px 6px;text-align:center;cursor:pointer;background:#fafbff;transition:.12s;user-select:none}
 .dest-btn:active{transform:scale(.95);background:#eef2ff;border-color:var(--navy)}
-.dest-btn .db-ico{font-size:28px;display:block;margin-bottom:4px}
-.dest-btn .db-lbl{font-size:12px;font-weight:700;color:#555}
+.dest-btn .db-ico{font-size:24px;display:block;margin-bottom:3px}
+.dest-btn .db-lbl{font-size:10px;font-weight:700;color:#555}
 
 .pago-linea{display:flex;align-items:center;gap:7px;padding:9px 11px;background:#fafbff;border-radius:var(--rsm);margin-bottom:6px;border-left:4px solid var(--orange)}
 .pl-ico{font-size:18px;flex-shrink:0}
@@ -111,15 +109,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .pl-desc{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pl-dest-lbl{font-size:10px;color:#888;margin-top:1px}
 .pl-amt{font-size:14px;font-weight:700;color:var(--red);flex-shrink:0}
-.pl-del{color:#ddd;font-size:20px;cursor:pointer;flex-shrink:0;margin-left:4px;padding:2px}
+.pl-del{color:#ddd;font-size:20px;cursor:pointer;flex-shrink:0;margin-left:4px}
 
-.total-pagos{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--lred);border-radius:var(--rsm);margin-top:6px}
+.estado-dia{border-radius:var(--rsm);padding:12px 14px;margin-top:10px;display:flex;align-items:center;justify-content:space-between}
+.estado-dia.abierto{background:var(--green);color:#fff}
+.estado-dia.cerrado{background:#1a5c1a;color:#fff}
+.estado-dia.festivo{background:#6c3483;color:#fff}
+.estado-dia .ed-txt{font-size:14px;font-weight:700}
+.estado-dia .ed-sub{font-size:10px;opacity:.8;margin-top:2px}
+.estado-dia .ed-btn{background:rgba(255,255,255,.2);border:none;border-radius:8px;padding:7px 12px;color:#fff;font-size:12px;font-weight:700;cursor:pointer}
 
-/* KPIS */
 .kpis{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:9px 0}
 .kpi{background:#fff;border-radius:var(--rsm);padding:9px 10px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,.06)}
 .kpi.green{background:var(--lgreen)}.kpi.red{background:var(--lred)}.kpi.gold{background:var(--gold)}.kpi.blue{background:var(--lblue)}.kpi.orange{background:var(--lorange)}
-.kpi label{display:block;font-size:9px;font-weight:700;color:#888;text-transform:uppercase;margin-bottom:2px;letter-spacing:.4px}
+.kpi label{display:block;font-size:9px;font-weight:700;color:#888;text-transform:uppercase;margin-bottom:2px}
 .kpi .val{font-size:17px;font-weight:800;color:var(--navy)}
 .kpi.green .val{color:var(--green)}.kpi.red .val{color:var(--red)}.kpi.gold .val{color:#7a5c00}.kpi.orange .val{color:var(--orange)}
 
@@ -128,9 +131,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .btn-success{background:var(--green);color:#fff}
 .btn-primary{background:var(--navy);color:#fff}
 .btn-outline{background:#fff;color:var(--navy);border:2px solid var(--navy)}
+.btn-purple{background:#6c3483;color:#fff}
 .btn i{font-size:18px}
+.btn-sm{padding:8px 14px;font-size:12px;width:auto;border-radius:99px}
 
 .lrow{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:#fff;border-radius:var(--rsm);margin-bottom:5px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.lrow.festivo{border-left:4px solid #6c3483;background:#fdf6ff}
+.lrow.cerrado{border-left:4px solid var(--green)}
 .lrow-date{font-size:12px;font-weight:700}.lrow-sub{font-size:10px;color:#888;margin-top:1px}
 .lrow-total{font-size:14px;font-weight:800;color:var(--navy);text-align:right}
 .lrow-neta{font-size:10px;color:var(--green);margin-top:1px;text-align:right}
@@ -163,17 +170,29 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .muted{color:#999;font-size:11px}
 .mt8{margin-top:8px}
 .del-btn{color:#ddd;font-size:15px;cursor:pointer;padding:3px}
+
+/* CONFIRM DIALOG */
+.confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;align-items:center;justify-content:center}
+.confirm-overlay.open{display:flex}
+.confirm-box{background:#fff;border-radius:18px;padding:24px 20px;width:88%;max-width:320px;text-align:center}
+.confirm-ico{font-size:40px;margin-bottom:10px}
+.confirm-title{font-size:16px;font-weight:800;color:#1a1a1a;margin-bottom:8px}
+.confirm-msg{font-size:13px;color:#666;margin-bottom:20px;line-height:1.5}
+.confirm-btns{display:flex;gap:10px}
+.confirm-btns button{flex:1;padding:12px;border-radius:10px;border:none;font-size:14px;font-weight:700;cursor:pointer}
+.confirm-cancel{background:#f0f0f0;color:#555}
+.confirm-ok{background:var(--orange);color:#fff}
 </style>
 </head>
 <body>
 
 <div class="topbar">
   <div>
-    <h1>🔧 Zapatero Rápido Madrid</h1>
+    <h1>&#128296; Zapatero Rápido Madrid</h1>
     <div class="sub" id="fecha-top"></div>
   </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
-    <span id="sync-ind" style="border-radius:99px;padding:2px 9px;font-size:10px;font-weight:700;color:#fff;background:rgba(0,150,0,.35)">☁ OK</span>
+    <span id="sync-ind" style="border-radius:99px;padding:2px 9px;font-size:10px;font-weight:700;color:#fff;background:rgba(0,150,0,.35)">&#9729; OK</span>
     <span id="user-badge" style="background:rgba(255,255,255,.18);border-radius:99px;padding:2px 10px;font-size:11px;font-weight:600">Andrés</span>
   </div>
   <div id="loader-bar"></div>
@@ -185,75 +204,63 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="tab" onclick="goTab('caja')"><i class="ti ti-wallet"></i>Caja</div>
   <div class="tab" onclick="goTab('nominas')"><i class="ti ti-users"></i>Nóminas</div>
   <div class="tab" onclick="goTab('finanzas')"><i class="ti ti-chart-pie"></i>Finanzas</div>
-  <div class="tab" onclick="goTab('dashboard')"><i class="ti ti-chart-dots"></i>Stats</div>
   <div class="tab" onclick="goTab('config')"><i class="ti ti-settings"></i>Config</div>
 </div>
 
-<!-- ══════════ CIERRE ══════════ -->
+<!-- CIERRE DEL DÍA -->
 <div class="page active" id="page-cierre">
-
-  <!-- Usuario -->
   <div style="display:flex;gap:7px;margin-bottom:11px;flex-wrap:wrap" id="chips-user">
-    <div style="padding:6px 14px;border-radius:99px;font-size:12px;font-weight:700;border:2px solid var(--navy);background:var(--navy);color:#fff;cursor:pointer" onclick="selUser(this,'Andrés')">👑 Andrés</div>
-    <div style="padding:6px 14px;border-radius:99px;font-size:12px;font-weight:700;border:2px solid #dde;background:#fff;cursor:pointer;color:#555" onclick="selUser(this,'Leidy')">👤 Leidy</div>
+    <div style="padding:6px 14px;border-radius:99px;font-size:12px;font-weight:700;border:2px solid var(--navy);background:var(--navy);color:#fff;cursor:pointer" onclick="selUser(this,'Andrés')">&#128081; Andrés</div>
+    <div style="padding:6px 14px;border-radius:99px;font-size:12px;font-weight:700;border:2px solid #dde;background:#fff;cursor:pointer;color:#555" onclick="selUser(this,'Leidy')">&#128100; Leidy</div>
   </div>
 
-  <!-- SELECTOR DE FECHA -->
   <div class="fecha-nav">
-    <button class="fecha-nav-btn" id="btn-prev" onclick="cambiarDia(-1)">‹</button>
+    <button class="fecha-nav-btn" id="btn-prev" onclick="cambiarDia(-1)">&#8249;</button>
     <div class="fecha-centro" onclick="abrirCalendario()">
-      <div class="fecha-num" id="f-num">14</div>
-      <div class="fecha-txt" id="f-txt">Miércoles, 14 de Mayo 2026</div>
-      <div class="fecha-hint">↑ toca para elegir otro día</div>
+      <div class="fecha-num" id="f-num">1</div>
+      <div class="fecha-txt" id="f-txt">Cargando...</div>
+      <div class="fecha-hint">&#8593; toca para elegir otro día</div>
     </div>
-    <button class="fecha-nav-btn" id="btn-next" onclick="cambiarDia(1)">›</button>
+    <button class="fecha-nav-btn" id="btn-next" onclick="cambiarDia(1)">&#8250;</button>
   </div>
 
-  <!-- INGRESOS -->
   <div class="card">
     <div class="card-hdr"><i class="ti ti-trending-up" style="color:var(--green)"></i><h2>Ingresos del día</h2><span class="badge badge-blue" id="dia-lab">Lab.</span></div>
     <div class="row2">
-      <div class="field"><label>🔑 Llaves</label><div class="pfx"><input type="number" id="llaves" placeholder="0.00" step="0.01" inputmode="decimal" oninput="calcTotal()"></div></div>
-      <div class="field"><label>💳 TPV</label><div class="pfx"><input type="number" id="tpv" placeholder="0.00" step="0.01" inputmode="decimal" oninput="calcTotal()"></div></div>
+      <div class="field"><label>&#128273; Llaves</label><div class="pfx"><input type="number" id="llaves" placeholder="0.00" step="0.01" inputmode="decimal" oninput="calcTotal()"></div></div>
+      <div class="field"><label>&#128179; TPV</label><div class="pfx"><input type="number" id="tpv" placeholder="0.00" step="0.01" inputmode="decimal" oninput="calcTotal()"></div></div>
     </div>
     <div class="row2">
-      <div class="field"><label>💵 Efectivo</label><div class="pfx"><input type="number" id="efectivo" placeholder="0.00" step="0.01" inputmode="decimal" oninput="calcTotal()"></div></div>
-      <div class="field"><label>📱 Bizum</label><div class="pfx"><input type="number" id="bizum" placeholder="0.00" step="0.01" inputmode="decimal" oninput="calcTotal()"></div></div>
+      <div class="field"><label>&#128181; Efectivo</label><div class="pfx"><input type="number" id="efectivo" placeholder="0.00" step="0.01" inputmode="decimal" oninput="calcTotal()"></div></div>
+      <div class="field"><label>&#128242; Bizum</label><div class="pfx"><input type="number" id="bizum" placeholder="0.00" step="0.01" inputmode="decimal" oninput="calcTotal()"></div></div>
     </div>
     <div class="auto-totals">
       <div class="at-row"><span class="at-label">Total día</span><span class="at-val big gold" id="k-total">€0,00</span></div>
-      <div class="at-row"><span class="at-label">💵 Caja menor (llaves + efectivo)</span><span class="at-val lgreen" id="k-caja">€0,00</span></div>
-      <div class="at-row"><span class="at-label">🏦 Banco (TPV + Bizum)</span><span class="at-val lgreen" id="k-banco">€0,00</span></div>
+      <div class="at-row"><span class="at-label">&#128181; Caja menor</span><span class="at-val lgreen" id="k-caja">€0,00</span></div>
+      <div class="at-row"><span class="at-label">&#127970; Banco</span><span class="at-val lgreen" id="k-banco">€0,00</span></div>
     </div>
   </div>
 
-  <!-- TICKETS -->
   <div class="tickets-box">
-    <span class="tk-label">🎟️ Tickets recogida</span>
+    <span class="tk-label">&#127915; Tickets recogida</span>
     <div class="tk-controls">
-      <button class="tk-btn" onclick="cambiarTickets(-1)">−</button>
-      <input id="tk-num" type="number" min="0" inputmode="numeric"
-        value="0" oninput="tickets=parseInt(this.value)||0"
-        style="width:72px;height:44px;border-radius:10px;border:2px solid rgba(0,0,0,.15);
-               background:rgba(255,255,255,.85);text-align:center;font-size:24px;
-               font-weight:800;color:#3a2600;padding:0 4px;outline:none;
-               -moz-appearance:textfield;-webkit-appearance:none;cursor:text">
-      <button class="tk-btn" onclick="cambiarTickets(1)">+</button>
+      <button class="tk-btn" onclick="cambiarTickets(-1)">&#8722;</button>
+      <input type="number" class="tk-input" id="tk-num" value="0" min="0" inputmode="numeric" oninput="tickets=parseInt(this.value)||0">
+      <button class="tk-btn" onclick="cambiarTickets(1)">&#43;</button>
     </div>
   </div>
 
-  <!-- PAGOS CAJA MENOR -->
   <div class="card">
     <div class="card-hdr"><i class="ti ti-receipt" style="color:var(--orange)"></i><h2>Pagos caja menor</h2></div>
     <div class="dest-btns">
-      <div class="dest-btn" onclick="openPago('andres','👑','Andrés')"><span class="db-ico">👑</span><span class="db-lbl">Andrés</span></div>
-      <div class="dest-btn" onclick="openPago('leidy','👤','Leidy')"><span class="db-ico">👤</span><span class="db-lbl">Leidy</span></div>
-      <div class="dest-btn" onclick="openPago('victoria','👧','Victoria')"><span class="db-ico">👧</span><span class="db-lbl">Victoria</span></div>
-      <div class="dest-btn" onclick="openPago('hogar','🏠','Hogar ÷2')"><span class="db-ico">🏠</span><span class="db-lbl">Hogar ÷2</span></div>
-      <div class="dest-btn" onclick="openPago('extras','🕐','Horas extras')"><span class="db-ico">🕐</span><span class="db-lbl">Horas extras</span></div>
-      <div class="dest-btn" onclick="openPago('local','🏪','Local')"><span class="db-ico">🏪</span><span class="db-lbl">Local</span></div>
-      <div class="dest-btn" onclick="openPago('banco_ing','🏦','Ingreso banco')"><span class="db-ico">🏦</span><span class="db-lbl">Ingreso banco</span></div>
-      <div class="dest-btn" onclick="openPago('varios','📋','Gastos varios')"><span class="db-ico">📋</span><span class="db-lbl">Gastos varios</span></div>
+      <div class="dest-btn" onclick="openPago('andres','&#128081;','Andrés')"><span class="db-ico">&#128081;</span><span class="db-lbl">Andrés</span></div>
+      <div class="dest-btn" onclick="openPago('leidy','&#128100;','Leidy')"><span class="db-ico">&#128100;</span><span class="db-lbl">Leidy</span></div>
+      <div class="dest-btn" onclick="openPago('victoria','&#128103;','Victoria')"><span class="db-ico">&#128103;</span><span class="db-lbl">Victoria</span></div>
+      <div class="dest-btn" onclick="openPago('hogar','&#127968;','Hogar ÷2')"><span class="db-ico">&#127968;</span><span class="db-lbl">Hogar ÷2</span></div>
+      <div class="dest-btn" onclick="openPago('extras','&#128336;','Horas extras')"><span class="db-ico">&#128336;</span><span class="db-lbl">H. Extras</span></div>
+      <div class="dest-btn" onclick="openPago('local','&#127978;','Local')"><span class="db-ico">&#127978;</span><span class="db-lbl">Local</span></div>
+      <div class="dest-btn" onclick="openPago('banco_ing','&#127970;','Ingreso banco')"><span class="db-ico">&#127970;</span><span class="db-lbl">Ing. banco</span></div>
+      <div class="dest-btn" onclick="openPago('varios','&#128203;','Gastos varios')"><span class="db-ico">&#128203;</span><span class="db-lbl">Varios</span></div>
     </div>
     <div id="pagos-lista"></div>
     <p class="muted" id="pagos-empty" style="text-align:center;padding:8px 0">Sin pagos registrados</p>
@@ -261,43 +268,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <span style="font-size:13px;font-weight:700;color:var(--red)">Total pagos caja</span>
       <span style="font-size:18px;font-weight:800;color:var(--red)" id="k-pagos">€0,00</span>
     </div>
-    <div class="field mt8"><label>📝 Notas</label><input type="text" id="notas" placeholder="Observaciones del día..."></div>
+    <div class="field mt8"><label>&#128221; Notas</label><input type="text" id="notas" placeholder="Observaciones..."></div>
   </div>
 
-  <button class="btn btn-success" id="btn-guardar" onclick="guardarDia()">
-    <i class="ti ti-device-floppy"></i><span id="btn-guardar-txt">Guardar cierre del día</span>
-  </button>
-  <!-- Botón festivo/descanso -->
-  <button class="btn btn-outline" id="btn-festivo" onclick="cerrarFestivo()" style="margin-top:8px">
-    <i class="ti ti-calendar-off"></i><span id="btn-festivo-txt">Marcar como Festivo / Descanso</span>
-  </button>
+  <!-- ESTADO DEL DÍA -->
+  <div id="estado-dia-box"></div>
 
-  <!-- Barra día cerrado -->
-  <div id="dia-cerrado-bar" style="display:none;margin-top:10px;background:#1a6b1a;border-radius:10px;padding:13px 16px;display:none;align-items:center;justify-content:space-between">
-    <div style="display:flex;align-items:center;gap:8px">
-      <i class="ti ti-lock" style="color:#90ee90;font-size:20px"></i>
-      <div>
-        <div style="color:#fff;font-size:13px;font-weight:700">✓ Día cerrado</div>
-        <div style="color:#90ee90;font-size:10px">Toca para modificar</div>
-      </div>
-    </div>
-    <button onclick="desbloquearDia()" style="background:rgba(255,255,255,.2);border:none;border-radius:8px;padding:7px 12px;color:#fff;font-size:12px;font-weight:700;cursor:pointer">Editar</button>
-  </div>
-  <!-- Overlay bloqueo -->
-  <div id="overlay-bloq" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:250;align-items:center;justify-content:center">
-    <div style="background:#fff;border-radius:18px;padding:24px 20px;width:88%;max-width:320px;text-align:center">
-      <div style="font-size:36px;margin-bottom:10px">🔒</div>
-      <div style="font-size:16px;font-weight:800;color:#1a1a1a;margin-bottom:8px">Día ya cerrado</div>
-      <div style="font-size:13px;color:#666;margin-bottom:20px" id="bloq-fecha-txt">Este día ya tiene datos guardados.<br>¿Seguro que quieres modificarlo?</div>
-      <div style="display:flex;gap:10px">
-        <button onclick="cerrarBloq()" style="flex:1;padding:12px;border-radius:10px;border:2px solid #dde;background:#fff;font-size:14px;font-weight:700;cursor:pointer;color:#555">Cancelar</button>
-        <button onclick="confirmarEdicion()" style="flex:1;padding:12px;border-radius:10px;border:none;background:var(--orange);color:#fff;font-size:14px;font-weight:700;cursor:pointer">Sí, editar</button>
-      </div>
-    </div>
+  <!-- BOTONES ACCION -->
+  <div id="btns-accion">
+    <button class="btn btn-success" id="btn-guardar" onclick="guardarDia()">
+      <i class="ti ti-device-floppy"></i><span id="btn-guardar-txt">Guardar cierre del día</span>
+    </button>
+    <button class="btn btn-purple mt8" onclick="marcarFestivo('Festivo')">
+      <i class="ti ti-calendar-off"></i>Festivo
+    </button>
+    <button class="btn btn-outline mt8" onclick="marcarFestivo('Descanso')">
+      <i class="ti ti-home"></i>Descanso
+    </button>
   </div>
 </div>
 
-<!-- ══════════ MES ══════════ -->
+<!-- MES -->
 <div class="page" id="page-historial">
   <div style="display:flex;align-items:center;justify-content:space-between">
     <p class="stitle" style="margin:8px 0 5px">Resumen mensual</p>
@@ -314,70 +305,58 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <span class="muted" id="prog-actual">€0</span><span class="muted" id="prog-obj">Obj: €0</span>
     </div>
   </div>
-  <div class="stitle">Días registrados</div>
+  <div class="stitle">Días del mes</div>
   <div id="days-list"></div>
   <p class="muted" id="no-data" style="text-align:center;padding:24px 0;display:none">Sin datos este mes.</p>
 </div>
 
-<!-- ══════════ CAJA ══════════ -->
+<!-- CAJA -->
 <div class="page" id="page-caja">
   <p class="stitle">Balance Caja y Banco</p>
   <div class="card">
-    <div class="card-hdr"><i class="ti ti-coins"></i><h2>💵 Caja Menor</h2></div>
+    <div class="card-hdr"><i class="ti ti-coins"></i><h2>&#128181; Caja Menor</h2></div>
     <div class="field"><label>Saldo inicial del mes</label><div class="pfx"><input type="number" id="caja-ini" placeholder="0.00" step="0.01" oninput="saveCajaIni()"></div></div>
     <div class="divider"></div>
     <div id="mov-caja"></div>
     <div class="divider"></div>
     <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span>Entradas (llaves + efectivo)</span><span id="caja-ent" style="color:var(--green);font-weight:700">€0,00</span></div>
     <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span>Salidas (pagos caja menor)</span><span id="caja-sal" style="color:var(--red);font-weight:700">€0,00</span></div>
-    <div style="display:flex;justify-content:space-between;padding:9px 0 2px;font-size:15px;font-weight:800;border-top:1px solid #eee;margin-top:5px"><span>💰 Saldo actual</span><span id="caja-saldo" style="color:var(--navy)">€0,00</span></div>
+    <div style="display:flex;justify-content:space-between;padding:9px 0 2px;font-size:15px;font-weight:800;border-top:1px solid #eee;margin-top:5px"><span>&#128176; Saldo actual</span><span id="caja-saldo" style="color:var(--navy)">€0,00</span></div>
   </div>
   <div class="card">
-    <div class="card-hdr"><i class="ti ti-building-bank"></i><h2>🏦 Banco</h2></div>
+    <div class="card-hdr"><i class="ti ti-building-bank"></i><h2>&#127970; Banco</h2></div>
     <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span>Entradas (TPV + Bizum)</span><span id="banco-ent" style="color:var(--green);font-weight:700">€0,00</span></div>
     <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span>Pagos domiciliados asentados</span><span id="banco-sal" style="color:var(--red);font-weight:700">€0,00</span></div>
-    <div style="display:flex;justify-content:space-between;padding:9px 0 2px;font-size:15px;font-weight:800;border-top:1px solid #eee;margin-top:5px"><span>🏦 Movimiento neto</span><span id="banco-saldo" style="color:var(--navy)">€0,00</span></div>
+    <div style="display:flex;justify-content:space-between;padding:9px 0 2px;font-size:15px;font-weight:800;border-top:1px solid #eee;margin-top:5px"><span>&#127970; Movimiento neto</span><span id="banco-saldo" style="color:var(--navy)">€0,00</span></div>
   </div>
 </div>
 
-<!-- ══════════ NÓMINAS ══════════ -->
+<!-- NOMINAS -->
 <div class="page" id="page-nominas">
   <p class="stitle">Nóminas y salario devengado</p>
-  <div class="alert alert-blue"><i class="ti ti-info-circle"></i><div>Victoria ÷2 se reparte entre Andrés y Leidy. El resto va directo a cada uno.</div></div>
+  <div class="alert alert-blue"><i class="ti ti-info-circle"></i><div>Hogar ÷2 y Victoria ÷2 se reparten. Lo directo va íntegro a cada uno.</div></div>
   <div id="nom-andres" class="nom-card"></div>
   <div id="nom-leidy" class="nom-card"></div>
   <div class="card mt8">
-    <div class="card-hdr"><i class="ti ti-heart"></i><h2>👧 Victoria — Gastos del mes</h2></div>
+    <div class="card-hdr"><i class="ti ti-heart"></i><h2>&#128103; Victoria</h2></div>
     <div id="rows-victoria"></div>
     <div class="divider"></div>
     <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:800"><span>Total Victoria</span><span id="tot-vic" style="color:var(--red)">€0,00</span></div>
   </div>
   <div class="card mt8">
-    <div class="card-hdr"><i class="ti ti-home"></i><h2>🏠 Hogar — Gastos compartidos ÷2</h2></div>
+    <div class="card-hdr"><i class="ti ti-home"></i><h2>&#127968; Hogar compartido ÷2</h2></div>
     <div id="rows-hogar"></div>
     <div class="divider"></div>
     <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:800"><span>Total Hogar</span><span id="tot-hogar" style="color:var(--red)">€0,00</span></div>
   </div>
-  <div class="card mt8">
-    <div class="card-hdr"><i class="ti ti-clock"></i><h2>🕐 Horas extras — Auxiliar</h2></div>
-    <div id="rows-extras"></div>
-    <div class="divider"></div>
-    <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:800"><span>Total Horas extras</span><span id="tot-extras" style="color:var(--red)">€0,00</span></div>
-  </div>
-  <div class="card mt8">
-    <div class="card-hdr"><i class="ti ti-building-store"></i><h2>🏪 Local — Gastos del negocio</h2></div>
-    <div id="rows-local"></div>
-    <div class="divider"></div>
-    <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:800"><span>Total Local</span><span id="tot-local" style="color:var(--red)">€0,00</span></div>
-  </div>
 </div>
 
-<!-- ══════════ FINANZAS ══════════ -->
+<!-- FINANZAS -->
 <div class="page" id="page-finanzas">
   <p class="stitle">Análisis financiero</p>
   <p class="muted" style="margin-bottom:9px" id="fin-fecha"></p>
   <div id="alertas-venc"></div>
-  <div class="stitle">Balance del mes actual</div>
+  <div class="stitle">Balance del mes</div>
   <div class="kpis">
     <div class="kpi gold"><label>Ventas</label><div class="val" id="fin-ventas">€0</div></div>
     <div class="kpi red"><label>Pagos caja</label><div class="val" id="fin-gastos">€0</div></div>
@@ -390,80 +369,35 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="card"><div id="comparativa"></div></div>
 </div>
 
-<!-- ══════════ DASHBOARD ══════════ -->
-<div class="page" id="page-dashboard">
-  <p class="stitle">Dashboard</p>
-  <p class="muted" style="margin-bottom:10px" id="dash-fecha"></p>
-
-  <!-- SPEEDOMETERS -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-    <div class="card" style="text-align:center;padding:12px 8px">
-      <p style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;margin-bottom:6px">Objetivo mes</p>
-      <canvas id="gauge-obj" width="130" height="80"></canvas>
-      <div id="gauge-obj-val" style="font-size:18px;font-weight:800;color:var(--navy);margin-top:4px">0%</div>
-      <div id="gauge-obj-sub" class="muted">€0 de €0</div>
-    </div>
-    <div class="card" style="text-align:center;padding:12px 8px">
-      <p style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;margin-bottom:6px">Resultado</p>
-      <canvas id="gauge-res" width="130" height="80"></canvas>
-      <div id="gauge-res-val" style="font-size:18px;font-weight:800;color:var(--green);margin-top:4px">€0</div>
-      <div id="gauge-res-sub" class="muted">ventas - gastos</div>
-    </div>
-  </div>
-
-  <!-- BARRAS ÚLTIMOS 6 MESES -->
-  <div class="card">
-    <div class="card-hdr"><i class="ti ti-chart-bar"></i><h2>Ventas últimos 6 meses</h2></div>
-    <canvas id="chart-ventas" width="340" height="160"></canvas>
-  </div>
-
-  <!-- DONUT DISTRIBUCIÓN INGRESOS -->
-  <div class="card">
-    <div class="card-hdr"><i class="ti ti-chart-pie"></i><h2>Distribución ingresos del mes</h2></div>
-    <div style="display:flex;align-items:center;gap:12px">
-      <canvas id="donut-ing" width="120" height="120" style="flex-shrink:0"></canvas>
-      <div id="donut-legend" style="flex:1;font-size:11px"></div>
-    </div>
-  </div>
-
-  <!-- KPIs rápidos -->
-  <div class="stitle">Resumen del mes</div>
-  <div class="kpis" id="dash-kpis"></div>
-</div>
-
-<!-- ══════════ CONFIG ══════════ -->
+<!-- CONFIG -->
 <div class="page" id="page-config">
   <p class="stitle">Configuración</p>
   <div class="card">
-    <div class="card-hdr"><i class="ti ti-target"></i><h2>Objetivo mensual de ventas</h2></div>
+    <div class="card-hdr"><i class="ti ti-target"></i><h2>Objetivo mensual</h2></div>
     <div class="field"><div class="pfx"><input type="number" id="cfg-obj" placeholder="8000" step="100" oninput="saveConfig()"></div></div>
   </div>
   <div class="card">
-    <div class="card-hdr"><i class="ti ti-users"></i><h2>Equipo</h2>
-      <span style="font-size:11px;color:var(--blue);cursor:pointer;font-weight:700" onclick="abrirSheet('sheet-emp')">+ Añadir</span>
-    </div>
+    <div class="card-hdr"><i class="ti ti-users"></i><h2>Equipo</h2><span style="font-size:11px;color:var(--blue);cursor:pointer;font-weight:700" onclick="abrirSheet('sheet-emp')">+ Añadir</span></div>
     <div id="emp-cfg"></div>
   </div>
   <div class="card">
-    <div class="card-hdr"><i class="ti ti-calendar-due"></i><h2>Pagos fijos bancarios</h2>
-      <span style="font-size:11px;color:var(--blue);cursor:pointer;font-weight:700" onclick="abrirSheet('sheet-pagos')">+ Añadir</span>
-    </div>
+    <div class="card-hdr"><i class="ti ti-calendar-due"></i><h2>Pagos fijos bancarios</h2><span style="font-size:11px;color:var(--blue);cursor:pointer;font-weight:700" onclick="abrirSheet('sheet-pagos')">+ Añadir</span></div>
     <div id="pagos-cfg"></div>
   </div>
   <div class="card">
-    <div class="card-hdr"><i class="ti ti-database-export"></i><h2>Exportar datos</h2></div>
-    <button class="btn btn-outline" onclick="exportarMes()" style="margin-bottom:8px"><i class="ti ti-file-spreadsheet"></i>Exportar ventas mes (CSV)</button>
-    <button class="btn btn-outline" onclick="exportarPagos()"><i class="ti ti-file-spreadsheet"></i>Exportar pagos mes (CSV)</button>
+    <div class="card-hdr"><i class="ti ti-database-export"></i><h2>Exportar</h2></div>
+    <button class="btn btn-outline" onclick="exportarMes()" style="margin-bottom:8px"><i class="ti ti-file-spreadsheet"></i>Exportar ventas (CSV)</button>
+    <button class="btn btn-outline" onclick="exportarPagos()"><i class="ti ti-file-spreadsheet"></i>Exportar pagos (CSV)</button>
   </div>
 </div>
 
-<!-- ══════════ CALENDARIO ══════════ -->
+<!-- CALENDARIO -->
 <div class="cal-overlay" id="cal-overlay">
   <div class="cal-box">
     <div class="cal-nav">
-      <button class="cal-nav-btn" id="cal-prev">‹</button>
+      <button class="cal-nav-btn" id="cal-prev">&#8249;</button>
       <span class="cal-mes" id="cal-titulo"></span>
-      <button class="cal-nav-btn" id="cal-next">›</button>
+      <button class="cal-nav-btn" id="cal-next">&#8250;</button>
     </div>
     <div class="cal-dias-hdr">
       <span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span class="dom">D</span>
@@ -473,11 +407,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- SHEET: añadir pago caja -->
+<!-- SHEET: pago -->
 <div class="overlay" id="sheet-pago">
   <div class="sheet">
-    <div class="sheet-title"><span id="sheet-pago-titulo">Añadir pago</span><span class="sheet-close" onclick="cerrarSheet('sheet-pago')">×</span></div>
-    <div class="field"><label>Descripción</label><input type="text" id="mp-desc" placeholder="Ej: Lotería, clase extra, efectivo..."></div>
+    <div class="sheet-title"><span id="sheet-pago-titulo">Añadir pago</span><span class="sheet-close" onclick="cerrarSheet('sheet-pago')">&#215;</span></div>
+    <div class="field"><label>Descripción</label><input type="text" id="mp-desc" placeholder="Ej: Lotería, clase extra..."></div>
     <div class="field"><label>Importe</label><div class="pfx"><input type="number" id="mp-imp" placeholder="0.00" step="0.01" inputmode="decimal"></div></div>
     <button class="btn btn-primary mt8" onclick="confirmarPago()"><i class="ti ti-plus"></i>Añadir pago</button>
   </div>
@@ -486,155 +420,174 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <!-- SHEET: empleados -->
 <div class="overlay" id="sheet-emp">
   <div class="sheet">
-    <div class="sheet-title">👥 Equipo <span class="sheet-close" onclick="cerrarSheet('sheet-emp')">×</span></div>
+    <div class="sheet-title">Equipo <span class="sheet-close" onclick="cerrarSheet('sheet-emp')">&#215;</span></div>
     <div class="row2" style="margin-bottom:9px">
       <input type="text" id="new-emp" placeholder="Nombre empleado" style="padding:10px;border:1.5px solid #dde;border-radius:var(--rsm);font-size:14px">
       <button class="btn btn-primary" onclick="addEmp()"><i class="ti ti-plus"></i>Añadir</button>
     </div>
     <div id="emp-sheet"></div>
-    <p class="muted mt8">Andrés y Leidy son fijos.</p>
   </div>
 </div>
 
 <!-- SHEET: pagos fijos -->
 <div class="overlay" id="sheet-pagos">
   <div class="sheet">
-    <div class="sheet-title">📅 Pago fijo bancario <span class="sheet-close" onclick="cerrarSheet('sheet-pagos')">×</span></div>
+    <div class="sheet-title">Pago fijo <span class="sheet-close" onclick="cerrarSheet('sheet-pagos')">&#215;</span></div>
     <div class="field"><label>Nombre</label><input type="text" id="pf-nom" placeholder="Préstamo ICO"></div>
     <div class="row2">
-      <div class="field"><label>Importe (€)</label><div class="pfx"><input type="number" id="pf-imp" step="0.01"></div></div>
+      <div class="field"><label>Importe</label><div class="pfx"><input type="number" id="pf-imp" step="0.01"></div></div>
       <div class="field"><label>Día del mes</label><input type="number" id="pf-dia" min="1" max="31" placeholder="5"></div>
     </div>
     <button class="btn btn-primary mt8" onclick="addPagoFijo()"><i class="ti ti-plus"></i>Añadir</button>
   </div>
 </div>
 
+<!-- CONFIRM DIALOG -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-ico" id="confirm-ico">&#128274;</div>
+    <div class="confirm-title" id="confirm-title">¿Confirmar?</div>
+    <div class="confirm-msg" id="confirm-msg"></div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="cerrarConfirm()">Cancelar</button>
+      <button class="confirm-ok" id="confirm-ok-btn">Confirmar</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKTo3_ZVtICiDMtcZOJdtHyrTaw5jPdYcTkKeIkV6Hu-KAukbXv_jCIu8OmpvUgCIwXw/exec';
-const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-const DS = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMyQzmFWTVgY6QJsfYdCL8vO_kWpsnZQB0OowpBsrhzEd2BhpuDx3pDnd1aOXXEHfR/exec";
+const MESES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+const DS = ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+const STORAGE_KEY = "zrm_stable";
 
 // ── ESTADO ────────────────────────────────────────────────────────────────────
-let currentUser = 'Andrés';
-let tickets = 0;
-let pagosHoy = [];
-let pagoDestino = {};
-let selY, selM, selD;   // fecha actualmente seleccionada
-let calY, calM;          // mes en vista del calendario
-
-// state.dias[key] = {tpv, efectivo, bizum, llaves, pagos[], tickets, notas, usuario, festivo?}
-// IMPORTANTE: state.dias solo se escribe desde guardarDia() y cargarMes()
-// NUNCA se lee para rellenar otro día que no sea su key exacta
+// dias: objeto plano { "2026-05-04": { llaves, tpv, efectivo, bizum, pagos[], tickets, notas, usuario, festivo, tipo } }
+// REGLA: state.dias[key] solo se escribe en guardarDia() y en mergeDesdSheets()
+// REGLA: cargarDiaEnFormulario() solo lee state.dias[getFechaKey()] — nunca otro día
 let state = {
   dias: {},
   empleados: [],
   pagosFijos: [
-    {id:1,nombre:'Préstamo ICO',importe:211,dia:5},
-    {id:2,nombre:'PMO Personal',importe:167,dia:5},
-    {id:3,nombre:'Tarjeta Visa Family',importe:0,dia:25},
-    {id:4,nombre:'Tarjeta Visa',importe:200,dia:25},
-    {id:5,nombre:'Seguro Vida',importe:45,dia:10},
-    {id:6,nombre:'Seguro Local',importe:60,dia:10}
+    {id:1,nombre:"Préstamo ICO",importe:211,dia:5},
+    {id:2,nombre:"PMO Personal",importe:167,dia:5},
+    {id:3,nombre:"Tarjeta Visa Family",importe:0,dia:25},
+    {id:4,nombre:"Tarjeta Visa",importe:200,dia:25},
+    {id:5,nombre:"Seguro Vida",importe:45,dia:10},
+    {id:6,nombre:"Seguro Local",importe:60,dia:10}
   ],
   config:{objetivo:8000},
   cajaIni:{}
 };
 
-function loadLocal(){
-  // Migrate from any old key
-  const oldKeys=['zrm_v4','zrm_v5','zrm_v6','zrm_v7','zrm_v8','zrm_v9'];
-  oldKeys.forEach(function(k){
-    if(!localStorage.getItem('zrm_stable') && localStorage.getItem(k)){
-      localStorage.setItem('zrm_stable', localStorage.getItem(k));
-    }
-  });
-  try{
-    const s=localStorage.getItem('zrm_stable');
-    if(s){
-      const parsed=JSON.parse(s);
-      // Merge carefully — never overwrite with undefined
-      if(parsed.dias) state.dias=parsed.dias;
-      if(parsed.empleados) state.empleados=parsed.empleados;
-      if(parsed.pagosFijos && parsed.pagosFijos.length) state.pagosFijos=parsed.pagosFijos;
-      if(parsed.config) state.config=parsed.config;
-      if(parsed.cajaIni) state.cajaIni=parsed.cajaIni;
-    }
-  }catch(e){}
-}
-function saveLocal(){ localStorage.setItem('zrm_stable',JSON.stringify(state)); }
+// Variables de formulario — GLOBALES, se resetean en cargarDiaEnFormulario()
+let currentUser = "Andrés";
+let tickets = 0;
+let pagosHoy = [];
+let pagoDestino = {};
 
-// ── SHEETS ────────────────────────────────────────────────────────────────────
-function setSyncStatus(s){
-  const el=document.getElementById('sync-ind');if(!el)return;
-  if(s==='ok'){el.textContent='☁ OK';el.style.background='rgba(0,150,0,.35)';}
-  if(s==='syncing'){el.textContent='↑ ...';el.style.background='rgba(200,160,0,.5)';}
-  if(s==='error'){el.textContent='⚠ Off';el.style.background='rgba(200,0,0,.45)';}
-}
-function showLoader(on){const el=document.getElementById('loader-bar');if(el)el.style.display=on?'block':'none';}
+// Variables de fecha — siempre representan el día SELECCIONADO
+let selY, selM, selD;
+let calY, calM;
 
-async function sheetsPost(payload){
-  setSyncStatus('syncing');
-  try{
-    const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});
-    const j=await r.json();
-    setSyncStatus(j.ok?'ok':'error');
+// ── LOCAL STORAGE ─────────────────────────────────────────────────────────────
+function loadLocal() {
+  try {
+    const s = localStorage.getItem(STORAGE_KEY);
+    if (s) {
+      const p = JSON.parse(s);
+      if (p.dias) state.dias = p.dias;
+      if (p.empleados) state.empleados = p.empleados;
+      if (p.pagosFijos && p.pagosFijos.length) state.pagosFijos = p.pagosFijos;
+      if (p.config) state.config = p.config;
+      if (p.cajaIni) state.cajaIni = p.cajaIni;
+    }
+  } catch(e) {}
+}
+function saveLocal() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+// ── SHEETS API ────────────────────────────────────────────────────────────────
+function setSyncStatus(s) {
+  const el = document.getElementById("sync-ind");
+  if (!el) return;
+  if (s === "ok")      { el.textContent = "☁ OK";  el.style.background = "rgba(0,150,0,.35)"; }
+  if (s === "syncing") { el.textContent = "↑ ..."; el.style.background = "rgba(200,160,0,.5)"; }
+  if (s === "error")   { el.textContent = "⚠ Off"; el.style.background = "rgba(200,0,0,.45)"; }
+}
+function showLoader(on) {
+  const el = document.getElementById("loader-bar");
+  if (el) el.style.display = on ? "block" : "none";
+}
+
+async function sheetsPost(payload) {
+  setSyncStatus("syncing");
+  try {
+    const r = await fetch(SCRIPT_URL, {method:"POST", body:JSON.stringify(payload)});
+    const j = await r.json();
+    setSyncStatus(j.ok ? "ok" : "error");
     return j.ok;
-  }catch(e){setSyncStatus('error');return false;}
+  } catch(e) { setSyncStatus("error"); return false; }
 }
 
-// cargarMesDesdeSheets — Sheets es la fuente de verdad, SIEMPRE sobreescribe local
-async function cargarMesDesdeSheets(mesKey){
-  try{
-    const r=await fetch(SCRIPT_URL+'?tipo=mes&mes='+encodeURIComponent(mesKey));
-    const data=await r.json();
-    if(data && data.dias && data.dias.length>0){
-      data.dias.forEach(function(d){
-        if(!d.fecha) return;
-        let k=d.fecha;
-        if(typeof k!=='string' || k.length>10) k=new Date(k).toISOString().split('T')[0];
-        let pagos=[];
-        try{pagos=typeof d.pagos_json==='string'?JSON.parse(d.pagos_json):[];}catch(e){}
-        // Sheets siempre gana — es la fuente de verdad
-        state.dias[k]={
-          tpv:+d.tpv||0, efectivo:+d.efectivo||0, bizum:+d.bizum||0, llaves:+d.llaves||0,
-          pagos:pagos, tickets:+d.tickets||0, notas:d.notas||'', usuario:d.usuario||'',
-          festivo:d.festivo||false
+// Carga un mes desde Sheets — SIEMPRE sobreescribe local (Sheets manda)
+async function cargarMesDesdeSheets(mesKey) {
+  showLoader(true);
+  try {
+    const r = await fetch(SCRIPT_URL + "?tipo=mes&mes=" + encodeURIComponent(mesKey));
+    const data = await r.json();
+    if (data && data.dias && data.dias.length > 0) {
+      data.dias.forEach(function(d) {
+        if (!d.fecha) return;
+        const k = d.fecha.substring(0,10);
+        let pagos = [];
+        try { pagos = typeof d.pagos_json === "string" ? JSON.parse(d.pagos_json) : []; } catch(e) {}
+        state.dias[k] = {
+          llaves: parseFloat(d.llaves)||0,
+          tpv: parseFloat(d.tpv)||0,
+          efectivo: parseFloat(d.efectivo)||0,
+          bizum: parseFloat(d.bizum)||0,
+          pagos: pagos,
+          tickets: parseInt(d.tickets)||0,
+          notas: d.notas || "",
+          usuario: d.usuario || "",
+          festivo: d.festivo === true || d.festivo === "Sí",
+          tipo: d.festivo ? (d.notas || "Festivo") : "normal"
         };
       });
       saveLocal();
       return true;
     }
     return false;
-  }catch(e){
-    console.log('Sin conexión, usando datos locales');
+  } catch(e) {
     return false;
+  } finally {
+    showLoader(false);
   }
-}
-
-// cargarMes — alias que usa Sheets como fuente de verdad
-async function cargarMes(mesKey){
-  return await cargarMesDesdeSheets(mesKey);
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 loadLocal();
 
-// Fecha inicial = hoy
-(function(){
-  const now=new Date();
-  selY=now.getFullYear(); selM=now.getMonth(); selD=now.getDate();
-  calY=selY; calM=selM;
+(function() {
+  const now = new Date();
+  selY = now.getFullYear();
+  selM = now.getMonth();
+  selD = now.getDate();
+  calY = selY;
+  calM = selM;
 })();
 
-// Init topbar fecha
-(function(){
-  const now=new Date();
-  const d=String(now.getDate()).padStart(2,'0');
-  const m=String(now.getMonth()+1).padStart(2,'0');
-  document.getElementById('fecha-top').textContent=DS[now.getDay()]+' '+d+'/'+m+'/'+now.getFullYear();
-  document.getElementById('fin-fecha').textContent='Actualizado: '+d+'/'+m+'/'+now.getFullYear();
+// Topbar fecha
+(function() {
+  const now = new Date();
+  document.getElementById("fecha-top").textContent =
+    DS[now.getDay()] + " " + pad(now.getDate()) + "/" + pad(now.getMonth()+1) + "/" + now.getFullYear();
+  document.getElementById("fin-fecha").textContent =
+    "Actualizado: " + pad(now.getDate()) + "/" + pad(now.getMonth()+1) + "/" + now.getFullYear();
 })();
 
 buildMesSelector();
@@ -642,668 +595,623 @@ loadConfig();
 renderConfigLists();
 
 // Bind calendario
-document.getElementById('cal-prev').addEventListener('click',function(){cambiarMesCal(-1);});
-document.getElementById('cal-next').addEventListener('click',function(){cambiarMesCal(1);});
+document.getElementById("cal-prev").addEventListener("click", function() { cambiarMesCal(-1); });
+document.getElementById("cal-next").addEventListener("click", function() { cambiarMesCal(1); });
 
-// Cargar mes actual y luego mostrar formulario
-const mkInicial=selY+'-'+pad(selM+1);
-cargarMes(mkInicial).then(function(){
-  actualizarVistaFecha();
+// Cargar mes actual desde Sheets, luego mostrar formulario
+const mkInit = selY + "-" + pad(selM+1);
+actualizarVistaFecha();
+cargarMesDesdeSheets(mkInit).then(function() {
   cargarDiaEnFormulario();
   renderOtrasPestanas();
 });
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
-function pad(n){return String(n).padStart(2,'0');}
-function getFechaKey(){return selY+'-'+pad(selM+1)+'-'+pad(selD);}
-function fmt(v){if(isNaN(v))return'€0,00';const abs=Math.abs(v);const s='€'+abs.toFixed(2).replace('.',',');return v<0?'-'+s:s;}
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2600);}
+function pad(n) { return String(n).padStart(2, "0"); }
+function getFechaKey() { return selY + "-" + pad(selM+1) + "-" + pad(selD); }
+function fmt(v) {
+  if (isNaN(v)) return "€0,00";
+  const abs = Math.abs(v);
+  const s = "€" + abs.toFixed(2).replace(".", ",");
+  return v < 0 ? "-" + s : s;
+}
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(function() { t.classList.remove("show"); }, 2600);
+}
 
 // ── TABS ──────────────────────────────────────────────────────────────────────
-function goTab(t){
-  const ts=['cierre','historial','caja','nominas','finanzas','dashboard','config'];
-  document.querySelectorAll('.tab').forEach(function(el,i){el.classList.toggle('active',ts[i]===t);});
-  document.querySelectorAll('.page').forEach(function(el){el.classList.remove('active');});
-  document.getElementById('page-'+t).classList.add('active');
-  if(t==='historial'){
-    const mk=document.getElementById('mes-sel').value;
-    cargarMesDesdeSheets(mk).then(function(){renderHistorial();});
+function goTab(t) {
+  const ts = ["cierre","historial","caja","nominas","finanzas","config"];
+  document.querySelectorAll(".tab").forEach(function(el, i) { el.classList.toggle("active", ts[i]===t); });
+  document.querySelectorAll(".page").forEach(function(el) { el.classList.remove("active"); });
+  document.getElementById("page-"+t).classList.add("active");
+  if (t === "historial") {
+    const mk = document.getElementById("mes-sel").value;
+    cargarMesDesdeSheets(mk).then(function() { renderHistorial(); });
   }
-  if(t==='dashboard') renderDashboard();
-  if(t==='caja') renderCaja();
-  if(t==='nominas') renderNominas();
-  if(t==='finanzas') renderFinanzas();
+  if (t === "caja") renderCaja();
+  if (t === "nominas") renderNominas();
+  if (t === "finanzas") renderFinanzas();
 }
+
+function abrirSheet(id) { document.getElementById(id).classList.add("open"); }
+function cerrarSheet(id) { document.getElementById(id).classList.remove("open"); }
 
 // ── USUARIO ───────────────────────────────────────────────────────────────────
-function selUser(el,name){
-  currentUser=name;
-  document.getElementById('chips-user').querySelectorAll('div').forEach(function(c){
-    const active=c===el;
-    c.style.background=active?'var(--navy)':'#fff';
-    c.style.color=active?'#fff':'#555';
-    c.style.borderColor=active?'var(--navy)':'#dde';
+function selUser(el, name) {
+  currentUser = name;
+  document.getElementById("chips-user").querySelectorAll("div").forEach(function(c) {
+    const active = c === el;
+    c.style.background = active ? "var(--navy)" : "#fff";
+    c.style.color = active ? "#fff" : "#555";
+    c.style.borderColor = active ? "var(--navy)" : "#dde";
   });
-  document.getElementById('user-badge').textContent=name;
+  document.getElementById("user-badge").textContent = name;
 }
 
-// ── SHEETS / OVERLAYS ─────────────────────────────────────────────────────────
-function abrirSheet(id){document.getElementById(id).classList.add('open');}
-function cerrarSheet(id){document.getElementById(id).classList.remove('open');}
-
 // ── TICKETS ───────────────────────────────────────────────────────────────────
-function cambiarTickets(d){
-  tickets=Math.max(0,tickets+d);
-  const tkEl2=document.getElementById('tk-num'); tkEl2.value=tickets; tkEl2.readOnly=false; tkEl2.removeAttribute('readonly');
+function cambiarTickets(d) {
+  tickets = Math.max(0, tickets + d);
+  document.getElementById("tk-num").value = tickets;
 }
 
 // ── INGRESOS ──────────────────────────────────────────────────────────────────
-function nv(id){return parseFloat(document.getElementById(id).value)||0;}
-function calcTotal(){
-  const llav=nv('llaves'),tpv=nv('tpv'),ef=nv('efectivo'),biz=nv('bizum');
-  document.getElementById('k-total').textContent=fmt(llav+tpv+ef+biz);
-  document.getElementById('k-caja').textContent=fmt(llav+ef);
-  document.getElementById('k-banco').textContent=fmt(tpv+biz);
+function nv(id) { return parseFloat(document.getElementById(id).value) || 0; }
+function calcTotal() {
+  const llav = nv("llaves"), tpv = nv("tpv"), ef = nv("efectivo"), biz = nv("bizum");
+  document.getElementById("k-total").textContent = fmt(llav+tpv+ef+biz);
+  document.getElementById("k-caja").textContent = fmt(llav+ef);
+  document.getElementById("k-banco").textContent = fmt(tpv+biz);
 }
 
-// ── FECHA: NAVEGACIÓN ─────────────────────────────────────────────────────────
-function actualizarVistaFecha(){
-  const dt=new Date(selY,selM,selD);
-  document.getElementById('f-num').textContent=selD;
-  document.getElementById('f-txt').textContent=DS[dt.getDay()]+', '+selD+' de '+MESES[selM]+' '+selY;
-  const lab=dt.getDay()>=1&&dt.getDay()<=6;
-  const b=document.getElementById('dia-lab');
-  b.textContent=lab?'Lab.':'Dom.';
-  b.className='badge '+(lab?'badge-blue':'badge-orange');
-  const hoy=new Date();hoy.setHours(0,0,0,0);
-  document.getElementById('btn-next').disabled=(new Date(selY,selM,selD)>=hoy);
+// ── FECHA ─────────────────────────────────────────────────────────────────────
+function actualizarVistaFecha() {
+  const dt = new Date(selY, selM, selD);
+  document.getElementById("f-num").textContent = selD;
+  document.getElementById("f-txt").textContent = DS[dt.getDay()] + ", " + selD + " de " + MESES[selM] + " " + selY;
+  const lab = dt.getDay() >= 1 && dt.getDay() <= 6;
+  const b = document.getElementById("dia-lab");
+  b.textContent = lab ? "Lab." : "Dom.";
+  b.className = "badge " + (lab ? "badge-blue" : "badge-orange");
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  document.getElementById("btn-next").disabled = (new Date(selY,selM,selD) >= hoy);
+  document.getElementById("btn-guardar-txt").textContent =
+    "Guardar cierre — " + selD + " de " + MESES[selM] + " " + selY;
 }
 
-function cambiarDia(delta){
-  const hoy=new Date();hoy.setHours(0,0,0,0);
-  const nueva=new Date(selY,selM,selD+delta);
-  if(nueva>hoy) return;
-  const mesAnterior=selM;
-  selY=nueva.getFullYear(); selM=nueva.getMonth(); selD=nueva.getDate();
+function cambiarDia(delta) {
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const nueva = new Date(selY, selM, selD + delta);
+  if (nueva > hoy) return;
+  const mesAntes = selM;
+  selY = nueva.getFullYear(); selM = nueva.getMonth(); selD = nueva.getDate();
   actualizarVistaFecha();
-  // Si cambia de mes, recargar desde Sheets
-  if(selM!==mesAnterior){
-    const mk=selY+'-'+pad(selM+1);
-    cargarMesDesdeSheets(mk).then(function(){cargarDiaEnFormulario();});
+  if (selM !== mesAntes) {
+    const mk = selY + "-" + pad(selM+1);
+    cargarMesDesdeSheets(mk).then(function() { cargarDiaEnFormulario(); });
   } else {
     cargarDiaEnFormulario();
   }
 }
 
 // ── CALENDARIO ────────────────────────────────────────────────────────────────
-function abrirCalendario(){
-  calY=selY; calM=selM;
+function abrirCalendario() {
+  calY = selY; calM = selM;
   renderCalendario();
-  document.getElementById('cal-overlay').classList.add('open');
+  document.getElementById("cal-overlay").classList.add("open");
 }
-function cerrarCalendario(){document.getElementById('cal-overlay').classList.remove('open');}
-function cambiarMesCal(delta){
-  const hoy=new Date();
-  calM+=delta;
-  if(calM>11){calM=0;calY++;}
-  if(calM<0){calM=11;calY--;}
-  if(calY>hoy.getFullYear()||(calY===hoy.getFullYear()&&calM>hoy.getMonth())){
-    calM-=delta;
-    if(calM>11){calM=0;calY++;}
-    if(calM<0){calM=11;calY--;}
+function cerrarCalendario() { document.getElementById("cal-overlay").classList.remove("open"); }
+function cambiarMesCal(delta) {
+  const hoy = new Date();
+  calM += delta;
+  if (calM > 11) { calM = 0; calY++; }
+  if (calM < 0)  { calM = 11; calY--; }
+  if (calY > hoy.getFullYear() || (calY === hoy.getFullYear() && calM > hoy.getMonth())) {
+    calM -= delta;
+    if (calM > 11) { calM = 0; calY++; }
+    if (calM < 0)  { calM = 11; calY--; }
     return;
   }
   renderCalendario();
 }
-function renderCalendario(){
-  const hoy=new Date();hoy.setHours(0,0,0,0);
-  document.getElementById('cal-titulo').textContent=MESES[calM]+' '+calY;
-  const totalDias=new Date(calY,calM+1,0).getDate();
-  let startDow=new Date(calY,calM,1).getDay()-1;
-  if(startDow<0) startDow=6;
-  const grid=document.getElementById('cal-grid');
-  grid.innerHTML='';
-  for(let i=0;i<startDow;i++){
-    const v=document.createElement('div');v.className='cal-dia vacio';grid.appendChild(v);
+function renderCalendario() {
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  document.getElementById("cal-titulo").textContent = MESES[calM] + " " + calY;
+  const totalDias = new Date(calY, calM+1, 0).getDate();
+  let startDow = new Date(calY, calM, 1).getDay() - 1;
+  if (startDow < 0) startDow = 6;
+  const grid = document.getElementById("cal-grid");
+  grid.innerHTML = "";
+  for (let i = 0; i < startDow; i++) {
+    const v = document.createElement("div"); v.className = "cal-dia vacio"; grid.appendChild(v);
   }
-  for(let d=1;d<=totalDias;d++){
-    const dt=new Date(calY,calM,d);
-    const esFuturo=dt>hoy;
-    const esHoy=dt.toDateString()===(new Date()).toDateString();
-    const esSel=(d===selD&&calM===selM&&calY===selY);
-    const esDom=dt.getDay()===0;
-    const esFestivo=!!state.dias[calY+'-'+pad(calM+1)+'-'+pad(d)]?.festivo;
-    const el=document.createElement('div');
-    el.textContent=d;
-    let cls='cal-dia';
-    if(esSel) cls+=' sel';
-    else if(esHoy) cls+=' hoy';
-    if(esDom) cls+=' dom';
-    if(esFuturo) cls+=' futuro';
-    el.className=cls;
-    if(esFestivo) el.style.textDecoration='line-through';
-    // Punto verde si tiene datos
-    const tieneDatos=!!state.dias[calY+'-'+pad(calM+1)+'-'+pad(d)];
-    if(tieneDatos&&!esFuturo) el.style.fontWeight='800';
-    if(!esFuturo){
-      const dy=d;
-      el.addEventListener('click',function(){
-        selY=calY; selM=calM; selD=dy;
-        cerrarCalendario();
-        actualizarVistaFecha();
-        const mk2=selY+'-'+pad(selM+1);
-        if(!getMes(mk2).length){
-          cargarMes(mk2).then(function(){cargarDiaEnFormulario();});
-        } else {
-          cargarDiaEnFormulario();
-        }
-      });
+  for (let d = 1; d <= totalDias; d++) {
+    const dt = new Date(calY, calM, d);
+    const esFuturo = dt > hoy;
+    const esHoy = dt.toDateString() === (new Date()).toDateString();
+    const esSel = (d === selD && calM === selM && calY === selY);
+    const esDom = dt.getDay() === 0;
+    const key = calY + "-" + pad(calM+1) + "-" + pad(d);
+    const tieneDatos = !!state.dias[key];
+    const esFestivo = tieneDatos && state.dias[key].festivo;
+    const el = document.createElement("div");
+    el.textContent = d;
+    let cls = "cal-dia";
+    if (esSel) cls += " sel";
+    else if (esHoy) cls += " hoy";
+    else if (esFestivo) cls += " festivo-dia";
+    else if (tieneDatos && !esFuturo) cls += " cerrado-ok";
+    if (esDom) cls += " dom";
+    if (esFuturo) cls += " futuro";
+    if (tieneDatos && !esFuturo) cls += " tiene-datos";
+    el.className = cls;
+    if (!esFuturo) {
+      (function(dy) {
+        el.addEventListener("click", function() {
+          selY = calY; selM = calM; selD = dy;
+          cerrarCalendario();
+          actualizarVistaFecha();
+          const mk = selY + "-" + pad(selM+1);
+          if (!getMes(mk).length) {
+            cargarMesDesdeSheets(mk).then(function() { cargarDiaEnFormulario(); });
+          } else {
+            cargarDiaEnFormulario();
+          }
+        });
+      })(d);
     }
     grid.appendChild(el);
   }
 }
 
-// ── FORMULARIO: CARGAR DÍA ────────────────────────────────────────────────────
-// Esta función es la ÚNICA que lee state.dias para rellenar el formulario
-// Siempre limpia PRIMERO, luego carga solo el día exacto seleccionado
-function cargarDiaEnFormulario(){
-  const key=getFechaKey();  // ej: "2026-05-04"
+// ── CARGAR DÍA EN FORMULARIO ──────────────────────────────────────────────────
+// REGLA ABSOLUTA: solo lee state.dias[key] donde key = getFechaKey()
+// Limpia TODO antes de cargar — nunca mezcla datos de días distintos
+function cargarDiaEnFormulario() {
+  const key = getFechaKey(); // ej: "2026-05-04"
 
-  // PASO 1: Limpiar TODO el formulario incondicionalmente
-  ['llaves','tpv','efectivo','bizum','notas'].forEach(function(id){
-    const el=document.getElementById(id);
-    if(el){ el.value=''; el.readOnly=false; el.style.background=''; el.style.color=''; }
+  // PASO 1: Limpiar formulario completamente
+  ["llaves","tpv","efectivo","bizum","notas"].forEach(function(id) {
+    const el = document.getElementById(id);
+    if (el) { el.value = ""; el.readOnly = false; el.style.background = ""; el.style.color = ""; }
   });
-  tickets=0;
-  pagosHoy=[];
+  tickets = 0;
+  pagosHoy = [];
   renderPagosHoy();
   calcTotal();
-  const tkEl=document.getElementById('tk-num'); tkEl.value=0; tkEl.readOnly=false; tkEl.removeAttribute('readonly');
-  document.querySelectorAll('.dest-btn,.tk-btn').forEach(function(el){
-    el.style.pointerEvents='auto'; el.style.opacity='1';
-  });
+  document.getElementById("tk-num").value = 0;
+  document.getElementById("tk-num").readOnly = false;
+  desbloquearBotonesPago();
 
-  // PASO 2: Resetear botones estado
-  const btn=document.getElementById('btn-guardar');
-  btn.style.background='';
-  btn.className='btn btn-success';
-  btn.innerHTML='<i class="ti ti-device-floppy"></i><span>Guardar cierre — '+selD+' de '+MESES[selM]+' '+selY+'</span>';
-  const btnF=document.getElementById('btn-festivo');
-  if(btnF){ btnF.style.cssText=''; document.getElementById('btn-festivo-txt').textContent='Marcar como Festivo / Descanso'; }
-  const bar=document.getElementById('dia-cerrado-bar');
-  if(bar) bar.style.display='none';
+  // PASO 2: Leer SOLO el día exacto
+  const d = state.dias[key];
 
-  // PASO 3: Leer SOLO el día exacto de state.dias
-  const d=state.dias[key];  // undefined si no existe
-
-  if(d){
-    if(d.festivo){
-      // Día festivo
-      if(btnF){
-        btnF.style.background='#6c3483'; btnF.style.borderColor='#6c3483'; btnF.style.color='#fff';
-        document.getElementById('btn-festivo-txt').textContent='🔴 '+(d.notas||'Festivo')+' — no laborable';
-      }
+  if (d) {
+    if (d.festivo) {
+      mostrarEstadoDia("festivo", d.tipo || d.notas || "Festivo");
       bloquearFormulario(true);
-      marcarCerrado(true);
+      ocultarBotonesGuardar();
     } else {
-      // Día con datos normales
-      document.getElementById('llaves').value=d.llaves||'';
-      document.getElementById('tpv').value=d.tpv||'';
-      document.getElementById('efectivo').value=d.efectivo||'';
-      document.getElementById('bizum').value=d.bizum||'';
-      document.getElementById('notas').value=d.notas||'';
-      tickets=d.tickets||0;
-      document.getElementById('tk-num').value=tickets;
-      pagosHoy=Array.isArray(d.pagos)?d.pagos.slice():[];
+      document.getElementById("llaves").value = d.llaves || "";
+      document.getElementById("tpv").value = d.tpv || "";
+      document.getElementById("efectivo").value = d.efectivo || "";
+      document.getElementById("bizum").value = d.bizum || "";
+      document.getElementById("notas").value = d.notas || "";
+      tickets = d.tickets || 0;
+      document.getElementById("tk-num").value = tickets;
+      pagosHoy = Array.isArray(d.pagos) ? d.pagos.slice() : [];
       renderPagosHoy();
       calcTotal();
+      mostrarEstadoDia("cerrado", selD + " de " + MESES[selM]);
       bloquearFormulario(true);
-      marcarCerrado(true);
+      mostrarBotonEditar();
     }
-  }
-  // Si d===undefined: formulario ya está en cero, listo para rellenar
-}
-
-function marcarCerrado(cerrado){
-  const btn=document.getElementById('btn-guardar');
-  const bar=document.getElementById('dia-cerrado-bar');
-  if(cerrado){
-    btn.style.background='#1a5c1a';
-    btn.innerHTML='<i class="ti ti-lock"></i><span>✓ Cerrado — '+selD+' de '+MESES[selM]+' '+selY+'</span>';
-    if(bar) bar.style.display='flex';
   } else {
-    btn.style.background='';
-    btn.className='btn btn-success';
-    btn.innerHTML='<i class="ti ti-device-floppy"></i><span>Guardar cierre — '+selD+' de '+MESES[selM]+' '+selY+'</span>';
-    if(bar) bar.style.display='none';
+    mostrarEstadoDia("abierto", "");
+    bloquearFormulario(false);
+    mostrarBotonesGuardar();
   }
 }
 
-function bloquearFormulario(on){
-  ['llaves','tpv','efectivo','bizum','notas'].forEach(function(id){
-    const el=document.getElementById(id);
-    if(el){ el.readOnly=on; el.style.background=on?'#f5f5f5':''; el.style.color=on?'#888':''; }
+function mostrarEstadoDia(tipo, texto) {
+  const box = document.getElementById("estado-dia-box");
+  if (tipo === "abierto") { box.innerHTML = ""; return; }
+  if (tipo === "cerrado") {
+    box.innerHTML = "<div class=\"estado-dia cerrado\"><div><div class=\"ed-txt\">&#128274; Cerrado — " + texto + "</div><div class=\"ed-sub\">Pulsa Editar para modificar</div></div><button class=\"ed-btn\" onclick=\"pedirEdicion()\">Editar</button></div>";
+  }
+  if (tipo === "festivo") {
+    box.innerHTML = "<div class=\"estado-dia festivo\"><div><div class=\"ed-txt\">&#128683; " + texto + " — No laborable</div><div class=\"ed-sub\">Pulsa Editar para desmarcar</div></div><button class=\"ed-btn\" onclick=\"pedirDesmarcarFestivo()\">Editar</button></div>";
+  }
+}
+
+function bloquearFormulario(on) {
+  ["llaves","tpv","efectivo","bizum","notas"].forEach(function(id) {
+    const el = document.getElementById(id);
+    if (el) { el.readOnly = on; el.style.background = on ? "#f5f5f5" : ""; el.style.color = on ? "#888" : ""; }
   });
-  // tk-num ALWAYS editable — never lock it
-  const tk=document.getElementById('tk-num');
-  if(tk){ tk.readOnly=false; tk.removeAttribute('readonly'); tk.style.background='rgba(255,255,255,.85)'; tk.style.color='#3a2600'; }
-  document.querySelectorAll('.dest-btn,.tk-btn').forEach(function(el){
-    el.style.pointerEvents=on?'none':'auto'; el.style.opacity=on?'0.5':'1';
+  document.querySelectorAll(".dest-btn").forEach(function(el) {
+    el.style.pointerEvents = on ? "none" : "auto";
+    el.style.opacity = on ? "0.4" : "1";
+  });
+  // tk-num NUNCA se bloquea
+  const tk = document.getElementById("tk-num");
+  if (tk) { tk.readOnly = false; tk.style.background = ""; tk.style.color = ""; }
+}
+
+function desbloquearBotonesPago() {
+  document.querySelectorAll(".dest-btn").forEach(function(el) {
+    el.style.pointerEvents = "auto"; el.style.opacity = "1";
   });
 }
 
-// ── EDITAR DÍA CERRADO ────────────────────────────────────────────────────────
-function desbloquearDia(){
-  document.getElementById('bloq-fecha-txt').innerHTML='<strong>'+selD+' de '+MESES[selM]+' '+selY+'</strong><br>¿Seguro que quieres modificar este día?';
-  document.getElementById('overlay-bloq').style.display='flex';
+function mostrarBotonesGuardar() {
+  const box = document.getElementById("btns-accion");
+  box.style.display = "block";
+  document.getElementById("btn-guardar").style.display = "flex";
+  // Mostrar botones festivo y descanso solo si el día está vacío
+  const btns = box.querySelectorAll(".btn-purple, .btn-outline");
+  btns.forEach(function(b) { b.style.display = "flex"; });
 }
-function cerrarBloq(){document.getElementById('overlay-bloq').style.display='none';}
-function confirmarEdicion(){
-  cerrarBloq();
-  marcarCerrado(false);
-  bloquearFormulario(false);
-  // Reset festivo button to show current state
-  const key=getFechaKey();
-  const esFestivo=state.dias[key]&&state.dias[key].festivo;
-  const btnF=document.getElementById('btn-festivo');
-  if(btnF){
-    if(esFestivo){
-      btnF.style.background='#6c3483';btnF.style.borderColor='#6c3483';btnF.style.color='#fff';
-      document.getElementById('btn-festivo-txt').textContent='🔴 Toca para desmarcar festivo';
-    } else {
-      btnF.style.cssText='';
-      document.getElementById('btn-festivo-txt').textContent='Marcar como Festivo / Descanso';
+
+function ocultarBotonesGuardar() {
+  document.getElementById("btn-guardar").style.display = "none";
+  const box = document.getElementById("btns-accion");
+  const btns = box.querySelectorAll(".btn-purple, .btn-outline");
+  btns.forEach(function(b) { b.style.display = "none"; });
+}
+
+function mostrarBotonEditar() {
+  document.getElementById("btn-guardar").style.display = "flex";
+  const box = document.getElementById("btns-accion");
+  const btns = box.querySelectorAll(".btn-purple, .btn-outline");
+  btns.forEach(function(b) { b.style.display = "none"; });
+}
+
+// ── EDICIÓN DE DÍA CERRADO ────────────────────────────────────────────────────
+function pedirEdicion() {
+  mostrarConfirm(
+    "&#128274;",
+    "Día cerrado",
+    selD + " de " + MESES[selM] + " " + selY + "<br>¿Seguro que quieres modificarlo?",
+    "Sí, editar",
+    function() {
+      bloquearFormulario(false);
+      mostrarEstadoDia("abierto", "");
+      mostrarBotonesGuardar();
+      toast("Modo edición — recuerda guardar");
     }
-  }
-  toast('Modo edición — recuerda guardar al terminar');
+  );
 }
 
-// ── PAGOS CAJA MENOR ──────────────────────────────────────────────────────────
-function openPago(destKey,ico,dest){
-  pagoDestino={destKey:destKey,ico:ico,dest:dest};
-  document.getElementById('sheet-pago-titulo').textContent=ico+' '+dest;
-  document.getElementById('mp-desc').value='';
-  document.getElementById('mp-imp').value='';
-  abrirSheet('sheet-pago');
-  setTimeout(function(){document.getElementById('mp-desc').focus();},300);
+function pedirDesmarcarFestivo() {
+  mostrarConfirm(
+    "&#128683;",
+    "Día festivo/descanso",
+    "¿Quieres desmarcar este día y introducir datos de venta?",
+    "Sí, desmarcar",
+    function() {
+      const key = getFechaKey();
+      delete state.dias[key];
+      saveLocal();
+      cargarDiaEnFormulario();
+      toast("Festivo desmarcado");
+    }
+  );
 }
-function confirmarPago(){
-  const desc=document.getElementById('mp-desc').value.trim();
-  const imp=parseFloat(document.getElementById('mp-imp').value)||0;
-  if(!desc&&imp===0){toast('Indica descripción o importe');return;}
-  pagosHoy.push({destKey:pagoDestino.destKey,ico:pagoDestino.ico,dest:pagoDestino.dest,desc:desc||pagoDestino.dest,imp:imp});
-  cerrarSheet('sheet-pago');
+
+// ── CONFIRM DIALOG ────────────────────────────────────────────────────────────
+let confirmCallback = null;
+function mostrarConfirm(ico, titulo, msg, btnTxt, callback) {
+  document.getElementById("confirm-ico").innerHTML = ico;
+  document.getElementById("confirm-title").textContent = titulo;
+  document.getElementById("confirm-msg").innerHTML = msg;
+  document.getElementById("confirm-ok-btn").textContent = btnTxt;
+  confirmCallback = callback;
+  document.getElementById("confirm-overlay").classList.add("open");
+}
+function cerrarConfirm() {
+  document.getElementById("confirm-overlay").classList.remove("open");
+  confirmCallback = null;
+}
+document.getElementById("confirm-ok-btn").addEventListener("click", function() {
+  cerrarConfirm();
+  if (confirmCallback) confirmCallback();
+});
+
+// ── PAGOS ─────────────────────────────────────────────────────────────────────
+function openPago(destKey, ico, dest) {
+  pagoDestino = {destKey:destKey, ico:ico, dest:dest};
+  document.getElementById("sheet-pago-titulo").textContent = ico + " " + dest;
+  document.getElementById("mp-desc").value = "";
+  document.getElementById("mp-imp").value = "";
+  abrirSheet("sheet-pago");
+  setTimeout(function() { document.getElementById("mp-desc").focus(); }, 300);
+}
+function confirmarPago() {
+  const desc = document.getElementById("mp-desc").value.trim();
+  const imp = parseFloat(document.getElementById("mp-imp").value) || 0;
+  if (!desc && imp === 0) { toast("Indica descripción o importe"); return; }
+  pagosHoy.push({destKey:pagoDestino.destKey, ico:pagoDestino.ico, dest:pagoDestino.dest, desc:desc||pagoDestino.dest, imp:imp});
+  cerrarSheet("sheet-pago");
   renderPagosHoy();
-  toast(pagoDestino.ico+' Añadido');
+  toast(pagoDestino.ico + " Añadido");
 }
-function removePago(i){pagosHoy.splice(i,1);renderPagosHoy();}
-function renderPagosHoy(){
-  const lista=document.getElementById('pagos-lista');
-  const empty=document.getElementById('pagos-empty');
-  const totalBox=document.getElementById('total-pagos-box');
-  if(!pagosHoy.length){
-    lista.innerHTML=''; empty.style.display='block'; totalBox.style.display='none'; return;
-  }
-  empty.style.display='none'; totalBox.style.display='flex';
-  const total=pagosHoy.reduce(function(s,p){return s+p.imp;},0);
-  document.getElementById('k-pagos').textContent=fmt(total);
-  lista.innerHTML=pagosHoy.map(function(p,i){
-    return '<div class="pago-linea"><span class="pl-ico">'+p.ico+'</span><div class="pl-info"><div class="pl-desc">'+p.desc+'</div><div class="pl-dest-lbl">'+p.dest+'</div></div><span class="pl-amt">'+fmt(p.imp)+'</span><span class="pl-del" onclick="removePago('+i+')">×</span></div>';
-  }).join('');
+function removePago(i) { pagosHoy.splice(i, 1); renderPagosHoy(); }
+function renderPagosHoy() {
+  const lista = document.getElementById("pagos-lista");
+  const empty = document.getElementById("pagos-empty");
+  const totalBox = document.getElementById("total-pagos-box");
+  if (!pagosHoy.length) { lista.innerHTML = ""; empty.style.display = "block"; totalBox.style.display = "none"; return; }
+  empty.style.display = "none"; totalBox.style.display = "flex";
+  const total = pagosHoy.reduce(function(s,p) { return s+p.imp; }, 0);
+  document.getElementById("k-pagos").textContent = fmt(total);
+  lista.innerHTML = pagosHoy.map(function(p, i) {
+    return "<div class=\"pago-linea\"><span class=\"pl-ico\">" + p.ico + "</span><div class=\"pl-info\"><div class=\"pl-desc\">" + p.desc + "</div><div class=\"pl-dest-lbl\">" + p.dest + "</div></div><span class=\"pl-amt\">" + fmt(p.imp) + "</span><span class=\"pl-del\" onclick=\"removePago(" + i + ")\">&#215;</span></div>";
+  }).join("");
 }
 
 // ── GUARDAR DÍA ───────────────────────────────────────────────────────────────
-async function guardarDia(){
-  const llav=nv('llaves'),tpv=nv('tpv'),ef=nv('efectivo'),biz=nv('bizum');
-  const key0=getFechaKey();
-  const esEdicion=!!state.dias[key0];
-  if(!esEdicion && llav+tpv+ef+biz===0&&pagosHoy.length===0&&tickets===0){
-    toast('Introduce al menos un dato');return;
+async function guardarDia() {
+  const llav = nv("llaves"), tpv = nv("tpv"), ef = nv("efectivo"), biz = nv("bizum");
+  if (llav+tpv+ef+biz === 0 && pagosHoy.length === 0 && tickets === 0) {
+    toast("Introduce al menos un dato"); return;
   }
-  const btn=document.getElementById('btn-guardar');
-  btn.disabled=true; btn.innerHTML='<i class="ti ti-loader"></i> Guardando...';
-  const key=getFechaKey();
-  const reg={tpv:tpv,efectivo:ef,bizum:biz,llaves:llav,pagos:pagosHoy.slice(),tickets:tickets,notas:document.getElementById('notas').value,usuario:currentUser,festivo:false};
-  // Guardar SOLO en la key de este día
-  state.dias[key]=reg;
+  const btn = document.getElementById("btn-guardar");
+  btn.disabled = true;
+  btn.innerHTML = "<i class=\"ti ti-loader\"></i> Guardando...";
+  const key = getFechaKey();
+  const reg = {
+    llaves:llav, tpv:tpv, efectivo:ef, bizum:biz,
+    pagos: pagosHoy.slice(), tickets:tickets,
+    notas: document.getElementById("notas").value,
+    usuario: currentUser, festivo: false, tipo: "normal"
+  };
+  // Guardar en state SOLO para esta key
+  state.dias[key] = reg;
   saveLocal();
-  const ok=await sheetsPost({tipo:'cierre_dia',fecha:key,tpv:tpv,efectivo:ef,bizum:biz,llaves:llav,tickets:tickets,notas:reg.notas,usuario:currentUser,pagos_json:JSON.stringify(pagosHoy),total_pagos:pagosHoy.reduce(function(s,p){return s+p.imp;},0)});
-  btn.disabled=false;
-  if(ok){
-    toast('✓ Cerrado — '+selD+' de '+MESES[selM]+' '+selY);
+  const ok = await sheetsPost({
+    tipo:"cierre_dia", fecha:key,
+    llaves:llav, tpv:tpv, efectivo:ef, bizum:biz,
+    tickets:tickets, notas:reg.notas, usuario:currentUser,
+    pagos_json: JSON.stringify(pagosHoy),
+    total_pagos: pagosHoy.reduce(function(s,p){return s+p.imp;},0),
+    festivo: false
+  });
+  btn.disabled = false;
+  if (ok) {
+    toast("✓ Guardado — " + selD + " de " + MESES[selM] + " " + selY);
+    mostrarEstadoDia("cerrado", selD + " de " + MESES[selM]);
+    bloquearFormulario(true);
+    mostrarBotonEditar();
+    renderOtrasPestanas();
   } else {
-    toast('⚠ Guardado local (sin internet)');
+    btn.innerHTML = "<i class=\"ti ti-device-floppy\"></i><span id=\"btn-guardar-txt\">Guardar cierre — " + selD + " de " + MESES[selM] + " " + selY + "</span>";
+    toast("⚠ Guardado local (sin internet)");
+    mostrarEstadoDia("cerrado", selD + " de " + MESES[selM]);
+    bloquearFormulario(true);
+    mostrarBotonEditar();
   }
-  // Marcar como cerrado y bloquear — SIN tocar los valores del formulario
-  marcarCerrado(true);
-  bloquearFormulario(true);
-  // Actualizar otras pestañas sin tocar el formulario
-  renderOtrasPestanas();
 }
 
-// ── FESTIVO ───────────────────────────────────────────────────────────────────
-function cerrarFestivo(){
-  const key=getFechaKey();
-  const yaFestivo=state.dias[key]&&state.dias[key].festivo;
-  if(yaFestivo){
-    // Permitir desmarcar festivo
-    if(!confirm('Este día está marcado como festivo. ¿Quieres desmarcarlo para introducir datos?')) return;
-    delete state.dias[key];
-    saveLocal();
-    // Reset formulario a vacío
-    ['llaves','tpv','efectivo','bizum','notas'].forEach(function(id){
-      const el=document.getElementById(id);
-      if(el){el.value='';el.readOnly=false;el.style.background='';el.style.color='';}
-    });
-    tickets=0; pagosHoy=[];
-    renderPagosHoy(); calcTotal();
-    document.getElementById('tk-num').value=0;
-    document.querySelectorAll('.dest-btn,.tk-btn').forEach(function(el){el.style.pointerEvents='auto';el.style.opacity='1';});
-    const btnF=document.getElementById('btn-festivo');
-    if(btnF){btnF.style.cssText='';document.getElementById('btn-festivo-txt').textContent='Marcar como Festivo / Descanso';}
-    marcarCerrado(false);
-    toast('Festivo desmarcado — ya puedes introducir datos');
-    return;
-  }
-  const nota=prompt('Motivo (deja vacío para "Festivo"):');
-  if(nota===null) return;
-  const motivo=nota.trim()||'Festivo';
-  const reg={tpv:0,efectivo:0,bizum:0,llaves:0,pagos:[],tickets:0,notas:motivo,usuario:currentUser,festivo:true};
-  state.dias[key]=reg; saveLocal();
-  sheetsPost({tipo:'cierre_dia',fecha:key,tpv:0,efectivo:0,bizum:0,llaves:0,tickets:0,notas:'🔴 '+motivo,usuario:currentUser,pagos_json:'[]',total_pagos:0});
-  const btnF=document.getElementById('btn-festivo');
-  if(btnF){btnF.style.background='#6c3483';btnF.style.borderColor='#6c3483';btnF.style.color='#fff';document.getElementById('btn-festivo-txt').textContent='🔴 '+motivo+' — no laborable';}
-  bloquearFormulario(true); marcarCerrado(true);
-  toast('Día marcado como '+motivo);
-  renderOtrasPestanas();
+// ── FESTIVO / DESCANSO ────────────────────────────────────────────────────────
+function marcarFestivo(tipo) {
+  mostrarConfirm(
+    tipo === "Festivo" ? "&#128683;" : "&#127968;",
+    "Marcar como " + tipo,
+    selD + " de " + MESES[selM] + " " + selY + "<br>Este día no contará en los promedios.",
+    "Confirmar",
+    async function() {
+      const key = getFechaKey();
+      const reg = {llaves:0,tpv:0,efectivo:0,bizum:0,pagos:[],tickets:0,notas:tipo,usuario:currentUser,festivo:true,tipo:tipo};
+      state.dias[key] = reg;
+      saveLocal();
+      await sheetsPost({tipo:"cierre_dia",fecha:key,llaves:0,tpv:0,efectivo:0,bizum:0,tickets:0,notas:tipo,usuario:currentUser,pagos_json:"[]",total_pagos:0,festivo:true});
+      toast("Marcado como " + tipo);
+      cargarDiaEnFormulario();
+      renderOtrasPestanas();
+    }
+  );
 }
 
 // ── HISTORIAL ─────────────────────────────────────────────────────────────────
-function buildMesSelector(){
-  const sel=document.getElementById('mes-sel'); const now=new Date();
-  for(let i=0;i<24;i++){
-    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
-    const key=d.getFullYear()+'-'+pad(d.getMonth()+1);
-    const o=document.createElement('option');
-    o.value=key; o.textContent=MESES[d.getMonth()].substring(0,3)+' '+d.getFullYear();
+function buildMesSelector() {
+  const sel = document.getElementById("mes-sel");
+  const now = new Date();
+  for (let i = 0; i < 24; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+    const key = d.getFullYear() + "-" + pad(d.getMonth()+1);
+    const o = document.createElement("option");
+    o.value = key; o.textContent = MESES[d.getMonth()].substring(0,3) + " " + d.getFullYear();
     sel.appendChild(o);
   }
 }
-function cambiarMes(){
-  const mk=document.getElementById('mes-sel').value;
-  cargarMes(mk).then(function(){renderHistorial();});
+function cambiarMes() {
+  const mk = document.getElementById("mes-sel").value;
+  cargarMesDesdeSheets(mk).then(function() { renderAll(); });
 }
-function getMes(mk){
+function getMes(mk) {
   return Object.entries(state.dias)
-    .filter(function(e){return e[0].startsWith(mk);})
-    .map(function(e){
-      const v=e[1];
-      return {fecha:e[0],tpv:+v.tpv||0,efectivo:+v.efectivo||0,bizum:+v.bizum||0,llaves:+v.llaves||0,pagos:Array.isArray(v.pagos)?v.pagos:[],tickets:+v.tickets||0,notas:v.notas||'',usuario:v.usuario||'',festivo:!!v.festivo};
+    .filter(function(e) { return e[0].startsWith(mk); })
+    .map(function(e) {
+      const v = e[1];
+      return {
+        fecha:e[0], llaves:+v.llaves||0, tpv:+v.tpv||0, efectivo:+v.efectivo||0, bizum:+v.bizum||0,
+        pagos:Array.isArray(v.pagos)?v.pagos:[], tickets:+v.tickets||0,
+        notas:v.notas||"", usuario:v.usuario||"", festivo:!!v.festivo, tipo:v.tipo||"normal"
+      };
     });
 }
-function renderOtrasPestanas(){renderHistorial();renderCaja();renderNominas();renderFinanzas();}
-function renderHistorial(){
-  const mk=document.getElementById('mes-sel').value;
-  const todos=getMes(mk).sort(function(a,b){return b.fecha.localeCompare(a.fecha);});
-  const datos=todos.filter(function(d){return !d.festivo;});
-  const tv=datos.reduce(function(s,d){return s+(d.tpv+d.efectivo+d.bizum+d.llaves);},0);
-  const tp=datos.reduce(function(s,d){return s+d.pagos.reduce(function(ss,p){return ss+(p.imp||0);},0);},0);
-  const pm=datos.length?tv/datos.length:0;
-  const obj=state.config.objetivo||8000; const pct=Math.min(100,Math.round(tv/obj*100));
-  document.getElementById('mes-kpis').innerHTML='<div class="kpi gold"><label>Total ventas</label><div class="val">'+fmt(tv)+'</div></div><div class="kpi red"><label>Pagos caja</label><div class="val">'+fmt(tp)+'</div></div><div class="kpi green"><label>Resultado</label><div class="val">'+fmt(tv-tp)+'</div></div><div class="kpi"><label>Prom/día lab.</label><div class="val">'+fmt(pm)+'</div></div>';
-  document.getElementById('pct-obj').textContent=pct+'%';
-  document.getElementById('prog-bar').style.width=pct+'%';
-  document.getElementById('prog-bar').className='progress-bar '+(pct>=100?'green':pct>=60?'orange':'red');
-  document.getElementById('prog-actual').textContent=fmt(tv);
-  document.getElementById('prog-obj').textContent='Obj: '+fmt(obj);
-  const list=document.getElementById('days-list'); const nd=document.getElementById('no-data');
-  list.innerHTML='';
-  if(!todos.length){nd.style.display='block';return;} nd.style.display='none';
-  todos.forEach(function(d){
-    const venta=d.tpv+d.efectivo+d.bizum+d.llaves;
-    const pago=d.pagos.reduce(function(s,p){return s+(p.imp||0);},0);
-    const dt=new Date(d.fecha+'T12:00:00');
-    const parts=d.fecha.split('-');
-    if(d.festivo){
-      list.innerHTML+='<div class="lrow" style="border-left:4px solid #6c3483"><div><div class="lrow-date">'+DS[dt.getDay()]+' '+parseInt(parts[2])+' '+MESES[dt.getMonth()]+'</div><div class="lrow-sub">🔴 '+(d.notas||'Festivo')+'</div></div><div class="lrow-total" style="color:#6c3483">—</div></div>';
+function renderAll() { renderHistorial(); renderCaja(); renderNominas(); renderFinanzas(); }
+function renderOtrasPestanas() { renderHistorial(); renderCaja(); renderNominas(); renderFinanzas(); }
+
+function renderHistorial() {
+  const mk = document.getElementById("mes-sel").value;
+  const todos = getMes(mk).sort(function(a,b) { return a.fecha.localeCompare(b.fecha); });
+  const datos = todos.filter(function(d) { return !d.festivo; });
+  const tv = datos.reduce(function(s,d) { return s+(d.tpv+d.efectivo+d.bizum+d.llaves); }, 0);
+  const tp = datos.reduce(function(s,d) { return s+d.pagos.reduce(function(ss,p){return ss+(p.imp||0);},0); }, 0);
+  const pm = datos.length ? tv/datos.length : 0;
+  const obj = state.config.objetivo || 8000;
+  const pct = Math.min(100, Math.round(tv/obj*100));
+  document.getElementById("mes-kpis").innerHTML =
+    "<div class=\"kpi gold\"><label>Total ventas</label><div class=\"val\">" + fmt(tv) + "</div></div>" +
+    "<div class=\"kpi red\"><label>Pagos caja</label><div class=\"val\">" + fmt(tp) + "</div></div>" +
+    "<div class=\"kpi green\"><label>Resultado</label><div class=\"val\">" + fmt(tv-tp) + "</div></div>" +
+    "<div class=\"kpi\"><label>Prom/día lab.</label><div class=\"val\">" + fmt(pm) + "</div></div>";
+  document.getElementById("pct-obj").textContent = pct + "%";
+  document.getElementById("prog-bar").style.width = pct + "%";
+  document.getElementById("prog-bar").className = "progress-bar " + (pct>=100?"green":pct>=60?"orange":"red");
+  document.getElementById("prog-actual").textContent = fmt(tv);
+  document.getElementById("prog-obj").textContent = "Obj: " + fmt(obj);
+  const list = document.getElementById("days-list");
+  const nd = document.getElementById("no-data");
+  list.innerHTML = "";
+  if (!todos.length) { nd.style.display = "block"; return; }
+  nd.style.display = "none";
+  todos.forEach(function(d) {
+    const venta = d.tpv+d.efectivo+d.bizum+d.llaves;
+    const pago = d.pagos.reduce(function(s,p){return s+(p.imp||0);},0);
+    const dt = new Date(d.fecha + "T12:00:00");
+    const parts = d.fecha.split("-");
+    if (d.festivo) {
+      list.innerHTML += "<div class=\"lrow festivo\"><div><div class=\"lrow-date\">" + DS[dt.getDay()] + " " + parseInt(parts[2]) + " " + MESES[dt.getMonth()] + "</div><div class=\"lrow-sub\">&#128683; " + (d.tipo||d.notas||"Festivo") + "</div></div><div style=\"color:#6c3483;font-weight:700\">—</div></div>";
     } else {
-      list.innerHTML+='<div class="lrow"><div><div class="lrow-date">'+DS[dt.getDay()]+' '+parseInt(parts[2])+' '+MESES[dt.getMonth()]+' <span style="font-size:9px;color:#bbb">'+d.usuario+'</span></div><div class="lrow-sub">Llaves:'+fmt(d.llaves)+' TPV:'+fmt(d.tpv)+' Ef:'+fmt(d.efectivo)+' 🎟️'+d.tickets+'</div></div><div><div class="lrow-total">'+fmt(venta)+'</div><div class="lrow-neta">Neta: '+fmt(d.efectivo+d.llaves-pago)+'</div></div></div>';
+      list.innerHTML += "<div class=\"lrow cerrado\"><div><div class=\"lrow-date\">" + DS[dt.getDay()] + " " + parseInt(parts[2]) + " " + MESES[dt.getMonth()] + " <span style=\"font-size:9px;color:#bbb\">" + d.usuario + "</span></div><div class=\"lrow-sub\">Llaves:" + fmt(d.llaves) + " TPV:" + fmt(d.tpv) + " Ef:" + fmt(d.efectivo) + " &#127915;" + d.tickets + "</div></div><div><div class=\"lrow-total\">" + fmt(venta) + "</div><div class=\"lrow-neta\">Neta: " + fmt(d.efectivo+d.llaves-pago) + "</div></div></div>";
     }
   });
 }
 
 // ── CAJA ──────────────────────────────────────────────────────────────────────
-function renderCaja(){
-  const mk=document.getElementById('mes-sel').value; const datos=getMes(mk);
-  const entC=datos.reduce(function(s,d){return s+(d.efectivo+d.llaves);},0);
-  const entB=datos.reduce(function(s,d){return s+(d.tpv+d.bizum);},0);
-  const salC=datos.reduce(function(s,d){return s+d.pagos.reduce(function(ss,p){return ss+(p.imp||0);},0);},0);
-  // Salidas banco: solo pagos fijos marcados como "pagado" este mes
-  // Por ahora 0 — se asientan manualmente cuando el banco los cobra
-  const salB=0;
-  const ini=+(state.cajaIni[mk]||0);
-  document.getElementById('caja-ent').textContent=fmt(entC);
-  document.getElementById('caja-sal').textContent=fmt(salC);
-  document.getElementById('caja-saldo').textContent=fmt(ini+entC-salC);
-  document.getElementById('banco-ent').textContent=fmt(entB);
-  document.getElementById('banco-sal').textContent=fmt(salB);
-  document.getElementById('banco-saldo').textContent=fmt(entB-salB);
-  const movs=datos.flatMap(function(d){return d.pagos.map(function(p){return Object.assign({},p,{fecha:d.fecha});});});
-  document.getElementById('mov-caja').innerHTML=movs.length
-    ?movs.map(function(p){return '<div style="display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:1px solid #f5f5f5"><span>'+p.fecha.slice(5)+' '+p.ico+' '+p.desc+'</span><span style="color:var(--red);font-weight:700">-'+fmt(p.imp)+'</span></div>';}).join('')
-    :'<p class="muted" style="text-align:center;padding:6px 0">Sin pagos este mes</p>';
-  document.getElementById('caja-ini').value=ini||'';
+function renderCaja() {
+  const mk = document.getElementById("mes-sel").value;
+  const datos = getMes(mk);
+  const entC = datos.reduce(function(s,d){return s+(d.efectivo+d.llaves);},0);
+  const entB = datos.reduce(function(s,d){return s+(d.tpv+d.bizum);},0);
+  const salC = datos.reduce(function(s,d){return s+d.pagos.reduce(function(ss,p){return ss+(p.imp||0);},0);},0);
+  const ini = +(state.cajaIni[mk]||0);
+  document.getElementById("caja-ent").textContent = fmt(entC);
+  document.getElementById("caja-sal").textContent = fmt(salC);
+  document.getElementById("caja-saldo").textContent = fmt(ini+entC-salC);
+  document.getElementById("banco-ent").textContent = fmt(entB);
+  document.getElementById("banco-sal").textContent = fmt(0);
+  document.getElementById("banco-saldo").textContent = fmt(entB);
+  const movs = datos.flatMap(function(d){return d.pagos.map(function(p){return Object.assign({},p,{fecha:d.fecha});});});
+  document.getElementById("mov-caja").innerHTML = movs.length
+    ? movs.map(function(p){return "<div style=\"display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:1px solid #f5f5f5\"><span>" + p.fecha.slice(5) + " " + p.ico + " " + p.desc + "</span><span style=\"color:var(--red);font-weight:700\">-" + fmt(p.imp) + "</span></div>";}).join("")
+    : "<p class=\"muted\" style=\"text-align:center;padding:6px 0\">Sin pagos este mes</p>";
+  document.getElementById("caja-ini").value = ini || "";
 }
-function saveCajaIni(){const mk=document.getElementById('mes-sel').value;state.cajaIni[mk]=parseFloat(document.getElementById('caja-ini').value)||0;saveLocal();renderCaja();}
+function saveCajaIni() {
+  const mk = document.getElementById("mes-sel").value;
+  state.cajaIni[mk] = parseFloat(document.getElementById("caja-ini").value) || 0;
+  saveLocal(); renderCaja();
+}
 
 // ── NÓMINAS ───────────────────────────────────────────────────────────────────
-function renderNominas(){
-  const mk=document.getElementById('mes-sel').value; const datos=getMes(mk);
-  const pagos=datos.flatMap(function(d){return d.pagos.map(function(p){return Object.assign({},p,{fecha:d.fecha});});});
-  const filtro=function(key){return pagos.filter(function(p){return p.destKey===key;});};
-  const sum=function(arr){return arr.reduce(function(s,p){return s+(p.imp||0);},0);};
-  const rowsHTML=function(arr){return arr.length?arr.map(function(p){return '<div class="nom-row"><span>'+p.fecha.slice(5)+' '+p.desc+'</span><span class="nom-val">'+fmt(p.imp)+'</span></div>';}).join(''):'<div class="muted" style="padding:4px 0">Sin movimientos</div>';};
-  const gaA=filtro('andres'); const sumA=sum(gaA);
-  const gaL=filtro('leidy');  const sumL=sum(gaL);
-  const gv=filtro('victoria'); const sumV=sum(gv);
-  const gh=filtro('hogar');    const sumH=sum(gh);
-  const ge=filtro('extras');   const sumE=sum(ge);
-  const gl=filtro('local');    const sumL2=sum(gl);
-  const buildNom=function(nombre,emoji,gd,sd){
-    return '<div class="nom-name">'+emoji+' '+nombre+'</div>'+rowsHTML(gd)+'<div class="divider"></div><div class="nom-row"><span>Subtotal directo</span><span class="nom-val">'+fmt(sd)+'</span></div><div class="nom-row"><span>+ Hogar ÷2</span><span class="nom-val">'+fmt(sumH/2)+'</span></div><div class="nom-row"><span>+ Victoria ÷2</span><span class="nom-val">'+fmt(sumV/2)+'</span></div><div class="nom-row" style="font-size:14px"><span>💰 TOTAL '+nombre+'</span><span>'+fmt(sd+sumH/2+sumV/2)+'</span></div>';
+function renderNominas() {
+  const mk = document.getElementById("mes-sel").value;
+  const datos = getMes(mk);
+  const pagos = datos.flatMap(function(d){return d.pagos.map(function(p){return Object.assign({},p,{fecha:d.fecha});});});
+  const filtro = function(key){return pagos.filter(function(p){return p.destKey===key;});};
+  const sum = function(arr){return arr.reduce(function(s,p){return s+(p.imp||0);},0);};
+  const rowsHTML = function(arr){
+    return arr.length
+      ? arr.map(function(p){return "<div class=\"nom-row\"><span>" + p.fecha.slice(5) + " " + p.desc + "</span><span class=\"nom-val\">" + fmt(p.imp) + "</span></div>";}).join("")
+      : "<div class=\"muted\" style=\"padding:4px 0\">Sin movimientos</div>";
   };
-  document.getElementById('nom-andres').innerHTML=buildNom('Andrés','👑',gaA,sumA);
-  document.getElementById('nom-leidy').innerHTML=buildNom('Leidy','👤',gaL,sumL);
-  document.getElementById('rows-victoria').innerHTML=rowsHTML(gv);
-  document.getElementById('tot-vic').textContent=fmt(sumV);
-  const rh=document.getElementById('rows-hogar'); if(rh) rh.innerHTML=rowsHTML(gh);
-  const th=document.getElementById('tot-hogar'); if(th) th.textContent=fmt(sumH);
-  const re=document.getElementById('rows-extras'); if(re) re.innerHTML=rowsHTML(ge);
-  const te=document.getElementById('tot-extras'); if(te) te.textContent=fmt(sumE);
-  const rl=document.getElementById('rows-local'); if(rl) rl.innerHTML=rowsHTML(gl);
-  const tl=document.getElementById('tot-local'); if(tl) tl.textContent=fmt(sumL2);
+  const gaA = filtro("andres"); const sumA = sum(gaA);
+  const gaL = filtro("leidy");  const sumL = sum(gaL);
+  const gv = filtro("victoria"); const sumV = sum(gv);
+  const gh = filtro("hogar");    const sumH = sum(gh);
+  const ge = filtro("extras");   const sumE = sum(ge);
+  const buildNom = function(nombre, emoji, gd, sd) {
+    return "<div class=\"nom-name\">" + emoji + " " + nombre + "</div>" + rowsHTML(gd) +
+      "<div class=\"divider\"></div>" +
+      "<div class=\"nom-row\"><span>Subtotal directo</span><span class=\"nom-val\">" + fmt(sd) + "</span></div>" +
+      "<div class=\"nom-row\"><span>+ Hogar ÷2</span><span class=\"nom-val\">" + fmt(sumH/2) + "</span></div>" +
+      "<div class=\"nom-row\"><span>+ Victoria ÷2</span><span class=\"nom-val\">" + fmt(sumV/2) + "</span></div>" +
+      "<div class=\"nom-row\" style=\"font-size:14px\"><span>&#128176; TOTAL " + nombre + "</span><span>" + fmt(sd+sumH/2+sumV/2) + "</span></div>";
+  };
+  document.getElementById("nom-andres").innerHTML = buildNom("Andrés","&#128081;",gaA,sumA);
+  document.getElementById("nom-leidy").innerHTML  = buildNom("Leidy","&#128100;",gaL,sumL);
+  document.getElementById("rows-victoria").innerHTML = rowsHTML(gv);
+  document.getElementById("tot-vic").textContent = fmt(sumV);
+  const rh = document.getElementById("rows-hogar"); if(rh) rh.innerHTML = rowsHTML(gh);
+  const th = document.getElementById("tot-hogar"); if(th) th.textContent = fmt(sumH);
 }
 
 // ── FINANZAS ──────────────────────────────────────────────────────────────────
-function renderFinanzas(){
-  const now=new Date(); const mk=now.getFullYear()+'-'+pad(now.getMonth()+1);
-  const todos=getMes(mk); const datos=todos.filter(function(d){return !d.festivo;});
-  const tv=datos.reduce(function(s,d){return s+(d.tpv+d.efectivo+d.bizum+d.llaves);},0);
-  const tp=datos.reduce(function(s,d){return s+d.pagos.reduce(function(ss,p){return ss+(p.imp||0);},0);},0);
-  const pm=datos.length?tv/datos.length:0;
-  document.getElementById('fin-ventas').textContent=fmt(tv);
-  document.getElementById('fin-gastos').textContent=fmt(tp);
-  document.getElementById('fin-result').textContent=fmt(tv-tp);
-  document.getElementById('fin-result').style.color=(tv-tp)>=0?'var(--green)':'var(--red)';
-  document.getElementById('fin-prom').textContent=fmt(pm);
-  const hoy=now.getDate();
-  const av=document.getElementById('alertas-venc'); av.innerHTML='';
-  const urg=state.pagosFijos.filter(function(p){return p.dia===hoy||p.dia===hoy+1;});
-  const prox=state.pagosFijos.filter(function(p){return p.dia>hoy+1&&p.dia<=hoy+5;});
-  if(urg.length) urg.forEach(function(p){av.innerHTML+='<div class="alert alert-red"><i class="ti ti-bell-ringing"></i><div><strong>'+(p.dia===hoy?'HOY':'MAÑANA')+': '+p.nombre+'</strong>'+(p.importe?' — '+fmt(p.importe):'')+'</div></div>';});
-  if(prox.length) prox.forEach(function(p){av.innerHTML+='<div class="alert alert-orange"><i class="ti ti-clock"></i><div>En '+(p.dia-hoy)+' días: <strong>'+p.nombre+'</strong>'+(p.importe?' — '+fmt(p.importe):'')+'</div></div>';});
-  if(!urg.length&&!prox.length) av.innerHTML='<div class="alert alert-green"><i class="ti ti-circle-check"></i><div>Sin vencimientos en los próximos 5 días.</div></div>';
-  const pm2=document.getElementById('pagos-mes');
-  pm2.innerHTML=state.pagosFijos.length?state.pagosFijos.sort(function(a,b){return a.dia-b.dia;}).map(function(p){const pas=p.dia<hoy;const ur=p.dia===hoy||p.dia===hoy+1;const cls=pas?'ok':ur?'urgent':'upcoming';const bdg=pas?'<span class="badge badge-green">✓</span>':ur?'<span class="badge badge-red">Hoy/Mañana</span>':'<span class="badge badge-orange">Pendiente</span>';return '<div class="pay '+cls+'"><div><div class="pname">🏦 '+p.nombre+bdg+'</div><div class="pdate">Día '+p.dia+'</div></div><div class="pamt">'+(p.importe?fmt(p.importe):'—')+'</div></div>';}).join(''):'<p class="muted" style="text-align:center;padding:10px">Añade pagos fijos en Configuración</p>';
-  const prevMk=(now.getFullYear()-1)+'-'+pad(now.getMonth()+1);
-  const ant=getMes(prevMk).filter(function(d){return !d.festivo;}).reduce(function(s,d){return s+(d.tpv+d.efectivo+d.bizum+d.llaves);},0);
-  const comp=document.getElementById('comparativa');
-  comp.innerHTML=ant>0?'<div style="display:flex;justify-content:space-between;margin-bottom:8px"><div><div class="muted">'+MESES[now.getMonth()]+' '+(now.getFullYear()-1)+'</div><div style="font-size:16px;font-weight:800">'+fmt(ant)+'</div></div><div style="text-align:right"><div class="muted">'+MESES[now.getMonth()]+' '+now.getFullYear()+'</div><div style="font-size:16px;font-weight:800">'+fmt(tv)+'</div></div></div><div style="text-align:center;font-weight:700;font-size:15px;color:'+(tv>=ant?'var(--green)':'var(--red)')+';">'+(tv>=ant?'▲':'▼')+' '+Math.abs(((tv-ant)/ant*100)).toFixed(1)+'% vs año anterior</div>':'<p class="muted" style="text-align:center;font-size:11px;padding:8px">Sin datos del año anterior aún.</p>';
+function renderFinanzas() {
+  const now = new Date();
+  const mk = now.getFullYear() + "-" + pad(now.getMonth()+1);
+  const todos = getMes(mk);
+  const datos = todos.filter(function(d){return !d.festivo;});
+  const tv = datos.reduce(function(s,d){return s+(d.tpv+d.efectivo+d.bizum+d.llaves);},0);
+  const tp = datos.reduce(function(s,d){return s+d.pagos.reduce(function(ss,p){return ss+(p.imp||0);},0);},0);
+  const pm = datos.length ? tv/datos.length : 0;
+  document.getElementById("fin-ventas").textContent = fmt(tv);
+  document.getElementById("fin-gastos").textContent = fmt(tp);
+  document.getElementById("fin-result").textContent = fmt(tv-tp);
+  document.getElementById("fin-result").style.color = (tv-tp)>=0?"var(--green)":"var(--red)";
+  document.getElementById("fin-prom").textContent = fmt(pm);
+  const hoy = now.getDate();
+  const av = document.getElementById("alertas-venc"); av.innerHTML = "";
+  const urg = state.pagosFijos.filter(function(p){return p.dia===hoy||p.dia===hoy+1;});
+  const prox = state.pagosFijos.filter(function(p){return p.dia>hoy+1&&p.dia<=hoy+5;});
+  if (urg.length) urg.forEach(function(p){av.innerHTML+="<div class=\"alert alert-red\"><i class=\"ti ti-bell-ringing\"></i><div><strong>"+(p.dia===hoy?"HOY":"MAÑANA")+": "+p.nombre+"</strong>"+(p.importe?" — "+fmt(p.importe):"")+"</div></div>";});
+  if (prox.length) prox.forEach(function(p){av.innerHTML+="<div class=\"alert alert-orange\"><i class=\"ti ti-clock\"></i><div>En "+(p.dia-hoy)+" días: <strong>"+p.nombre+"</strong>"+(p.importe?" — "+fmt(p.importe):"")+"</div></div>";});
+  if (!urg.length&&!prox.length) av.innerHTML="<div class=\"alert alert-green\"><i class=\"ti ti-circle-check\"></i><div>Sin vencimientos en los próximos 5 días.</div></div>";
+  const pm2 = document.getElementById("pagos-mes");
+  pm2.innerHTML = state.pagosFijos.length
+    ? state.pagosFijos.sort(function(a,b){return a.dia-b.dia;}).map(function(p){
+        const pas=p.dia<hoy; const ur=p.dia===hoy||p.dia===hoy+1;
+        const cls=pas?"ok":ur?"urgent":"upcoming";
+        const bdg=pas?"<span class=\"badge badge-green\">✓</span>":ur?"<span class=\"badge badge-red\">Hoy/Mañana</span>":"<span class=\"badge badge-orange\">Pendiente</span>";
+        return "<div class=\"pay "+cls+"\"><div><div class=\"pname\">&#127970; "+p.nombre+bdg+"</div><div class=\"pdate\">Día "+p.dia+"</div></div><div class=\"pamt\">"+(p.importe?fmt(p.importe):"—")+"</div></div>";
+      }).join("")
+    : "<p class=\"muted\" style=\"text-align:center;padding:10px\">Añade pagos fijos en Configuración</p>";
+  const prevMk = (now.getFullYear()-1) + "-" + pad(now.getMonth()+1);
+  const ant = getMes(prevMk).filter(function(d){return !d.festivo;}).reduce(function(s,d){return s+(d.tpv+d.efectivo+d.bizum+d.llaves);},0);
+  const comp = document.getElementById("comparativa");
+  comp.innerHTML = ant > 0
+    ? "<div style=\"display:flex;justify-content:space-between;margin-bottom:8px\"><div><div class=\"muted\">"+MESES[now.getMonth()]+" "+(now.getFullYear()-1)+"</div><div style=\"font-size:16px;font-weight:800\">"+fmt(ant)+"</div></div><div style=\"text-align:right\"><div class=\"muted\">"+MESES[now.getMonth()]+" "+now.getFullYear()+"</div><div style=\"font-size:16px;font-weight:800\">"+fmt(tv)+"</div></div></div><div style=\"text-align:center;font-weight:700;font-size:15px;color:"+(tv>=ant?"var(--green)":"var(--red)")+";\">"+(tv>=ant?"▲":"▼")+" "+Math.abs(((tv-ant)/ant*100)).toFixed(1)+"% vs año anterior</div>"
+    : "<p class=\"muted\" style=\"text-align:center;font-size:11px;padding:8px\">Sin datos del año anterior aún.</p>";
 }
 
 // ── CONFIG ────────────────────────────────────────────────────────────────────
-function addEmp(){const v=document.getElementById('new-emp').value.trim();if(!v)return;if(!state.empleados.includes(v)){state.empleados.push(v);saveLocal();}document.getElementById('new-emp').value='';renderConfigLists();toast('Empleado añadido');}
+function addEmp(){const v=document.getElementById("new-emp").value.trim();if(!v)return;if(!state.empleados.includes(v)){state.empleados.push(v);saveLocal();}document.getElementById("new-emp").value="";renderConfigLists();toast("Empleado añadido");}
 function delEmp(e){state.empleados=state.empleados.filter(function(x){return x!==e;});saveLocal();renderConfigLists();}
 function addPagoFijo(){
-  const n=document.getElementById('pf-nom').value.trim();
-  const i=parseFloat(document.getElementById('pf-imp').value)||0;
-  const d=parseInt(document.getElementById('pf-dia').value)||1;
-  if(!n){toast('Indica el nombre');return;}
+  const n=document.getElementById("pf-nom").value.trim();
+  const i=parseFloat(document.getElementById("pf-imp").value)||0;
+  const d=parseInt(document.getElementById("pf-dia").value)||1;
+  if(!n){toast("Indica el nombre");return;}
   state.pagosFijos.push({id:Date.now(),nombre:n,importe:i,dia:d});
-  saveLocal();['pf-nom','pf-imp','pf-dia'].forEach(function(id){document.getElementById(id).value='';});
-  cerrarSheet('sheet-pagos');renderConfigLists();renderFinanzas();toast('Pago fijo añadido');
+  saveLocal();["pf-nom","pf-imp","pf-dia"].forEach(function(id){document.getElementById(id).value="";});
+  cerrarSheet("sheet-pagos");renderConfigLists();renderFinanzas();toast("Pago fijo añadido");
 }
 function delPagoFijo(id){state.pagosFijos=state.pagosFijos.filter(function(p){return p.id!==id;});saveLocal();renderConfigLists();renderFinanzas();}
 function renderConfigLists(){
-  const fijos=['Andrés','Leidy'];
-  const empHTML=[...fijos.map(function(e){return '<div class="lrow"><span style="font-size:12px">👤 '+e+' <span class="badge badge-blue">Fijo</span></span></div>';}),
-    ...state.empleados.map(function(e){return '<div class="lrow"><span style="font-size:12px">👤 '+e+'</span><span class="del-btn" onclick="delEmp(\''+e+'\')"><i class="ti ti-trash"></i></span></div>';})].join('');
-  const ec=document.getElementById('emp-cfg'); if(ec) ec.innerHTML=empHTML;
-  const es=document.getElementById('emp-sheet'); if(es) es.innerHTML=empHTML;
-  const pc=document.getElementById('pagos-cfg');
-  if(pc) pc.innerHTML=state.pagosFijos.length?state.pagosFijos.sort(function(a,b){return a.dia-b.dia;}).map(function(p){return '<div class="lrow"><div><div style="font-size:12px;font-weight:600">🏦 '+p.nombre+'</div><div class="muted">Día '+p.dia+(p.importe?' · '+fmt(p.importe):'')+'</div></div><span class="del-btn" onclick="delPagoFijo('+p.id+')"><i class="ti ti-trash"></i></span></div>';}).join(''):'<p class="muted" style="text-align:center;padding:6px">Sin pagos fijos</p>';
+  const empHTML=[...["Andrés","Leidy"].map(function(e){return "<div class=\"lrow\"><span style=\"font-size:12px\">&#128100; "+e+" <span class=\"badge badge-blue\">Fijo</span></span></div>";}),
+    ...state.empleados.map(function(e){return "<div class=\"lrow\"><span style=\"font-size:12px\">&#128100; "+e+"</span><span class=\"del-btn\" onclick=\"delEmp('"+e+"')\"><i class=\"ti ti-trash\"></i></span></div>";})].join("");
+  const ec=document.getElementById("emp-cfg");if(ec)ec.innerHTML=empHTML;
+  const es=document.getElementById("emp-sheet");if(es)es.innerHTML=empHTML;
+  const pc=document.getElementById("pagos-cfg");
+  if(pc)pc.innerHTML=state.pagosFijos.length
+    ?state.pagosFijos.sort(function(a,b){return a.dia-b.dia;}).map(function(p){return "<div class=\"lrow\"><div><div style=\"font-size:12px;font-weight:600\">&#127970; "+p.nombre+"</div><div class=\"muted\">Día "+p.dia+(p.importe?" · "+fmt(p.importe):"")+"</div></div><span class=\"del-btn\" onclick=\"delPagoFijo("+p.id+")\"><i class=\"ti ti-trash\"></i></span></div>";}).join("")
+    :"<p class=\"muted\" style=\"text-align:center;padding:6px\">Sin pagos fijos</p>";
 }
-function loadConfig(){document.getElementById('cfg-obj').value=state.config.objetivo||8000;}
-function saveConfig(){state.config.objetivo=parseFloat(document.getElementById('cfg-obj').value)||8000;saveLocal();}
-
-// ── DASHBOARD ─────────────────────────────────────────────────────────────────
-function renderDashboard(){
-  const now=new Date();
-  document.getElementById('dash-fecha').textContent='Actualizado: '+pad(now.getDate())+'/'+pad(now.getMonth()+1)+'/'+now.getFullYear();
-  const mk=now.getFullYear()+'-'+pad(now.getMonth()+1);
-  const datos=getMes(mk).filter(function(d){return !d.festivo;});
-  const tv=datos.reduce(function(s,d){return s+(d.tpv+d.efectivo+d.bizum+d.llaves);},0);
-  const tp=datos.reduce(function(s,d){return s+d.pagos.reduce(function(ss,p){return ss+(p.imp||0);},0);},0);
-  const obj=state.config.objetivo||8000;
-  const pct=Math.min(100,Math.round(tv/obj*100));
-
-  // KPIs
-  const pm=datos.length?tv/datos.length:0;
-  document.getElementById('dash-kpis').innerHTML=
-    '<div class="kpi gold"><label>Ventas mes</label><div class="val">'+fmt(tv)+'</div></div>'+
-    '<div class="kpi red"><label>Pagos caja</label><div class="val">'+fmt(tp)+'</div></div>'+
-    '<div class="kpi green"><label>Resultado</label><div class="val">'+fmt(tv-tp)+'</div></div>'+
-    '<div class="kpi blue"><label>Días trabajados</label><div class="val">'+datos.length+'</div></div>';
-
-  // GAUGE objetivo
-  drawGauge('gauge-obj', pct, pct>=100?'#007000':pct>=60?'#C55A11':'#C00000');
-  document.getElementById('gauge-obj-val').textContent=pct+'%';
-  document.getElementById('gauge-obj-sub').textContent=fmt(tv)+' de '+fmt(obj);
-
-  // GAUGE resultado
-  const resPct=tv>0?Math.min(100,Math.round(((tv-tp)/tv)*100)):0;
-  drawGauge('gauge-res', resPct, resPct>=30?'#007000':resPct>=10?'#C55A11':'#C00000');
-  document.getElementById('gauge-res-val').textContent=fmt(tv-tp);
-  document.getElementById('gauge-res-val').style.color=tv-tp>=0?'var(--green)':'var(--red)';
-  document.getElementById('gauge-res-sub').textContent='margen '+resPct+'%';
-
-  // BARRAS 6 meses
-  const labels=[]; const vals=[];
-  for(let i=5;i>=0;i--){
-    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
-    const kmk=d.getFullYear()+'-'+pad(d.getMonth()+1);
-    const mes=getMes(kmk).filter(function(x){return !x.festivo;});
-    labels.push(MESES[d.getMonth()].substring(0,3));
-    vals.push(mes.reduce(function(s,x){return s+(x.tpv+x.efectivo+x.bizum+x.llaves);},0));
-  }
-  drawBars('chart-ventas', labels, vals, obj);
-
-  // DONUT distribución
-  const sumTpv=datos.reduce(function(s,d){return s+d.tpv;},0);
-  const sumEf=datos.reduce(function(s,d){return s+d.efectivo;},0);
-  const sumBiz=datos.reduce(function(s,d){return s+d.bizum;},0);
-  const sumLlav=datos.reduce(function(s,d){return s+d.llaves;},0);
-  const donutData=[
-    {label:'TPV',val:sumTpv,color:'#4472C4'},
-    {label:'Efectivo',val:sumEf,color:'#FFD966'},
-    {label:'Bizum',val:sumBiz,color:'#70AD47'},
-    {label:'Llaves',val:sumLlav,color:'#ED7D31'}
-  ].filter(function(x){return x.val>0;});
-  drawDonut('donut-ing', donutData);
-  const tot=donutData.reduce(function(s,x){return s+x.val;},0);
-  document.getElementById('donut-legend').innerHTML=donutData.map(function(x){
-    return '<div style="display:flex;align-items:center;gap:6px;margin-bottom:5px"><div style="width:10px;height:10px;border-radius:50%;background:'+x.color+';flex-shrink:0"></div><span>'+x.label+': '+fmt(x.val)+' ('+(tot?Math.round(x.val/tot*100):0)+'%)</span></div>';
-  }).join('');
-}
-
-function drawGauge(id, pct, color){
-  const canvas=document.getElementById(id); if(!canvas) return;
-  const ctx=canvas.getContext('2d');
-  const W=canvas.width, H=canvas.height;
-  ctx.clearRect(0,0,W,H);
-  const cx=W/2, cy=H-10, r=H-20;
-  // Background arc
-  ctx.beginPath(); ctx.arc(cx,cy,r,Math.PI,0); ctx.lineWidth=14; ctx.strokeStyle='#eee'; ctx.stroke();
-  // Value arc
-  const angle=Math.PI*(pct/100);
-  ctx.beginPath(); ctx.arc(cx,cy,r,Math.PI,Math.PI+angle); ctx.lineWidth=14; ctx.strokeStyle=color; ctx.lineCap='round'; ctx.stroke();
-  // Needle
-  const needleAngle=Math.PI+angle;
-  ctx.beginPath();
-  ctx.moveTo(cx,cy);
-  ctx.lineTo(cx+Math.cos(needleAngle)*(r-4), cy+Math.sin(needleAngle)*(r-4));
-  ctx.lineWidth=3; ctx.strokeStyle='#333'; ctx.stroke();
-  ctx.beginPath(); ctx.arc(cx,cy,5,0,Math.PI*2); ctx.fillStyle='#333'; ctx.fill();
-}
-
-function drawBars(id, labels, vals, objetivo){
-  const canvas=document.getElementById(id); if(!canvas) return;
-  const ctx=canvas.getContext('2d');
-  const W=canvas.width, H=canvas.height;
-  ctx.clearRect(0,0,W,H);
-  const maxVal=Math.max(objetivo, ...vals, 1);
-  const n=labels.length; const pad2=30; const barW=(W-pad2*2)/n*0.6; const gap=(W-pad2*2)/n;
-  // Línea objetivo
-  const objY=H-20-(objetivo/maxVal)*(H-40);
-  ctx.beginPath(); ctx.setLineDash([4,3]); ctx.moveTo(pad2,objY); ctx.lineTo(W-pad2,objY);
-  ctx.strokeStyle='#C00000'; ctx.lineWidth=1.5; ctx.stroke(); ctx.setLineDash([]);
-  ctx.fillStyle='#C00000'; ctx.font='9px Arial'; ctx.fillText('Obj',W-pad2+2,objY+3);
-  vals.forEach(function(v,i){
-    const x=pad2+i*gap+(gap-barW)/2;
-    const barH=(v/maxVal)*(H-40);
-    const y=H-20-barH;
-    const color=v>=objetivo?'#007000':v>=objetivo*0.7?'#C55A11':'#4472C4';
-    ctx.fillStyle=color; ctx.beginPath();
-    ctx.roundRect?ctx.roundRect(x,y,barW,barH,4):ctx.fillRect(x,y,barW,barH);
-    ctx.fill();
-    ctx.fillStyle='#555'; ctx.font='9px Arial'; ctx.textAlign='center';
-    ctx.fillText(labels[i],x+barW/2,H-5);
-    if(v>0){ ctx.fillStyle='#fff'; ctx.font='bold 8px Arial'; ctx.fillText(Math.round(v/1000)+'k',x+barW/2,y+12); }
-  });
-}
-
-function drawDonut(id, data){
-  const canvas=document.getElementById(id); if(!canvas) return;
-  const ctx=canvas.getContext('2d');
-  const W=canvas.width, H=canvas.height;
-  ctx.clearRect(0,0,W,H);
-  const tot=data.reduce(function(s,x){return s+x.val;},0); if(!tot) return;
-  const cx=W/2, cy=H/2, r=Math.min(W,H)/2-8;
-  let angle=-Math.PI/2;
-  data.forEach(function(x){
-    const slice=(x.val/tot)*Math.PI*2;
-    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,angle,angle+slice);
-    ctx.fillStyle=x.color; ctx.fill();
-    angle+=slice;
-  });
-  // Hole
-  ctx.beginPath(); ctx.arc(cx,cy,r*0.55,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
-}
+function loadConfig(){document.getElementById("cfg-obj").value=state.config.objetivo||8000;}
+function saveConfig(){state.config.objetivo=parseFloat(document.getElementById("cfg-obj").value)||8000;saveLocal();}
 
 // ── EXPORT ────────────────────────────────────────────────────────────────────
-function exportarMes(){const mk=document.getElementById('mes-sel').value;const datos=getMes(mk).sort(function(a,b){return a.fecha.localeCompare(b.fecha);});let c='Fecha,Llaves,TPV,Efectivo,Bizum,Total,Tickets,Usuario,Festivo\n';datos.forEach(function(d){const tv=d.tpv+d.efectivo+d.bizum+d.llaves;c+=d.fecha+','+d.llaves+','+d.tpv+','+d.efectivo+','+d.bizum+','+tv+','+d.tickets+',"'+d.usuario+'",'+(d.festivo?'Sí':'No')+'\n';});dlCSV(c,'ventas_'+mk+'.csv');}
-function exportarPagos(){const mk=document.getElementById('mes-sel').value;const datos=getMes(mk);let c='Fecha,Destino,Descripcion,Importe,Usuario\n';datos.forEach(function(d){d.pagos.forEach(function(p){c+=d.fecha+',"'+(p.dest||'')+'","'+(p.desc||'')+'",'+( p.imp||0)+',"'+d.usuario+'"\n';});});dlCSV(c,'pagos_'+mk+'.csv');}
-function dlCSV(c,name){const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(c);a.download=name;a.click();toast('CSV descargado');}
+function exportarMes(){const mk=document.getElementById("mes-sel").value;const datos=getMes(mk).sort(function(a,b){return a.fecha.localeCompare(b.fecha);});let c="Fecha,Llaves,TPV,Efectivo,Bizum,Total,Tickets,Usuario,Festivo\n";datos.forEach(function(d){const tv=d.tpv+d.efectivo+d.bizum+d.llaves;c+=d.fecha+","+d.llaves+","+d.tpv+","+d.efectivo+","+d.bizum+","+tv+","+d.tickets+",\""+d.usuario+"\","+(d.festivo?"Sí":"No")+"\n";});dlCSV(c,"ventas_"+mk+".csv");}
+function exportarPagos(){const mk=document.getElementById("mes-sel").value;const datos=getMes(mk);let c="Fecha,Destino,Descripcion,Importe,Usuario\n";datos.forEach(function(d){d.pagos.forEach(function(p){c+=d.fecha+",\"+(p.dest||"")+"\",\"+(p.desc||"")+"\","+(p.imp||0)+",\""+d.usuario+"\"
+";});});dlCSV(c,"pagos_"+mk+".csv");}
+function dlCSV(c,name){const a=document.createElement("a");a.href="data:text/csv;charset=utf-8,\uFEFF"+encodeURIComponent(c);a.download=name;a.click();toast("CSV descargado");}
 </script>
 </body>
 </html>
