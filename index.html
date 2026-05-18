@@ -527,9 +527,9 @@ async function sheetsPost(payload) {
   setSyncStatus("syncing");
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(function() { controller.abort(); }, 10000);
+    const tid = setTimeout(function(){controller.abort();}, 8000);
     const r = await fetch(SCRIPT_URL, {method:"POST", body:JSON.stringify(payload), signal:controller.signal});
-    clearTimeout(timeout);
+    clearTimeout(tid);
     const j = await r.json();
     setSyncStatus(j.ok ? "ok" : "error");
     return j.ok;
@@ -541,9 +541,9 @@ async function cargarMesDesdeSheets(mesKey) {
   showLoader(true);
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(function() { controller.abort(); }, 10000);
+    const tid = setTimeout(function(){controller.abort();}, 8000);
     const r = await fetch(SCRIPT_URL + "?tipo=mes&mes=" + encodeURIComponent(mesKey), {signal:controller.signal});
-    clearTimeout(timeout);
+    clearTimeout(tid);
     const data = await r.json();
     if (data && data.dias && data.dias.length > 0) {
       data.dias.forEach(function(d) {
@@ -604,17 +604,13 @@ renderConfigLists();
 document.getElementById("cal-prev").addEventListener("click", function() { cambiarMesCal(-1); });
 document.getElementById("cal-next").addEventListener("click", function() { cambiarMesCal(1); });
 
-// Mostrar app inmediatamente con datos locales
+// Cargar mes actual desde Sheets, luego mostrar formulario
 const mkInit = selY + "-" + pad(selM+1);
 actualizarVistaFecha();
-cargarDiaEnFormulario();
-renderOtrasPestanas();
-// Cargar Sheets en segundo plano sin bloquear
-setTimeout(function() {
-  cargarMesDesdeSheets(mkInit).then(function(ok) {
-    if (ok) { cargarDiaEnFormulario(); renderOtrasPestanas(); }
-  });
-}, 500);
+cargarMesDesdeSheets(mkInit).then(function() {
+  cargarDiaEnFormulario();
+  renderOtrasPestanas();
+});
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 function pad(n) { return String(n).padStart(2, "0"); }
