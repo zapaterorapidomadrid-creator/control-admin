@@ -526,7 +526,10 @@ function showLoader(on) {
 async function sheetsPost(payload) {
   setSyncStatus("syncing");
   try {
-    const r = await fetch(SCRIPT_URL, {method:"POST", body:JSON.stringify(payload)});
+    const controller = new AbortController();
+    const timeout = setTimeout(function() { controller.abort(); }, 10000);
+    const r = await fetch(SCRIPT_URL, {method:"POST", body:JSON.stringify(payload), signal:controller.signal});
+    clearTimeout(timeout);
     const j = await r.json();
     setSyncStatus(j.ok ? "ok" : "error");
     return j.ok;
@@ -537,7 +540,10 @@ async function sheetsPost(payload) {
 async function cargarMesDesdeSheets(mesKey) {
   showLoader(true);
   try {
-    const r = await fetch(SCRIPT_URL + "?tipo=mes&mes=" + encodeURIComponent(mesKey));
+    const controller = new AbortController();
+    const timeout = setTimeout(function() { controller.abort(); }, 10000);
+    const r = await fetch(SCRIPT_URL + "?tipo=mes&mes=" + encodeURIComponent(mesKey), {signal:controller.signal});
+    clearTimeout(timeout);
     const data = await r.json();
     if (data && data.dias && data.dias.length > 0) {
       data.dias.forEach(function(d) {
@@ -598,13 +604,17 @@ renderConfigLists();
 document.getElementById("cal-prev").addEventListener("click", function() { cambiarMesCal(-1); });
 document.getElementById("cal-next").addEventListener("click", function() { cambiarMesCal(1); });
 
-// Cargar mes actual desde Sheets, luego mostrar formulario
+// Mostrar app inmediatamente con datos locales
 const mkInit = selY + "-" + pad(selM+1);
 actualizarVistaFecha();
-cargarMesDesdeSheets(mkInit).then(function() {
-  cargarDiaEnFormulario();
-  renderOtrasPestanas();
-});
+cargarDiaEnFormulario();
+renderOtrasPestanas();
+// Cargar Sheets en segundo plano sin bloquear
+setTimeout(function() {
+  cargarMesDesdeSheets(mkInit).then(function(ok) {
+    if (ok) { cargarDiaEnFormulario(); renderOtrasPestanas(); }
+  });
+}, 500);
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 function pad(n) { return String(n).padStart(2, "0"); }
