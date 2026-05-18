@@ -604,13 +604,17 @@ renderConfigLists();
 document.getElementById("cal-prev").addEventListener("click", function() { cambiarMesCal(-1); });
 document.getElementById("cal-next").addEventListener("click", function() { cambiarMesCal(1); });
 
-// Cargar mes actual desde Sheets, luego mostrar formulario
+// Mostrar app INMEDIATAMENTE con datos locales
 const mkInit = selY + "-" + pad(selM+1);
 actualizarVistaFecha();
-cargarMesDesdeSheets(mkInit).then(function() {
-  cargarDiaEnFormulario();
-  renderOtrasPestanas();
-});
+cargarDiaEnFormulario();
+renderOtrasPestanas();
+// Sheets en segundo plano
+setTimeout(function() {
+  cargarMesDesdeSheets(mkInit).then(function(ok) {
+    if (ok) { cargarDiaEnFormulario(); renderOtrasPestanas(); }
+  });
+}, 800);
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 function pad(n) { return String(n).padStart(2, "0"); }
